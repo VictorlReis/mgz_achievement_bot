@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
-const { clientId, guildId, token, connectionString } = require('./config.json');
-
+const { clientId, guildId, token, connectionString } = require('../config.json');
+const Meguinha = require('./models/meguinha');
+const Conquista = require('./models/conquista');
 
 const client = new Discord.Client({ intents: [ 'DIRECT_MESSAGES', 'GUILD_MESSAGES' ] });
 
@@ -20,27 +21,35 @@ client.once('ready', () => {
 client.on("message", async msg => {
     if(msg.author.bot) return;
     if(msg.channel.type === "dm") return;
-    
 
+    const mensagem = msg.toString();
+
+    if(!mensagem) return;
+
+    const [a, cmd, ...params] = mensagem.split(" ");
+
+    if(!a.includes('.a')) return;
+
+    const paramsTratados = tratarParams(params);
     
-    switch (msg.toString()) {
-        case ".a help":
+    switch (cmd) {
+        case "help":
             await msg.channel.send(doc);
           return;
-        case '.a registrar':
-            await msg.channel.send(registrarUsuario(msg));
+        case 'registrar':
+            await msg.channel.send(await registrarMeguinha(paramsTratados));
             return;
-        case '.a newConquista':
+        case 'newConquista':
             await msg.channel.send("ainda n ta pronto");
             return;
-        case '.a leaderboard':
+        case 'leaderboard':
             await msg.channel.send("ainda n ta pronto");
             return;   
-        case '.a setConquista':
+        case 'setConquista':
             await msg.channel.send("ainda n ta pronto");
             return;              
-        case '.a updateConquista':
-            await msg.channel.send("ainda n ta pronto");
+        case 'updateConquista':
+            await msg.channel.send(paramsTratados);
             return;  
         default:
             msg.channel.send("Ta tentando falar comigo? Manda um .a help que eu te ajudo");
@@ -50,20 +59,27 @@ client.on("message", async msg => {
 
 client.login(token);
 
-function registrarUsuario(msg) {
-    const mensagem = msg.toString();
+async function registrarMeguinha(params) {
 
-    const usuarioJaRegistrado = true; //users.find(msg.author.id);
+    if(!params || params.length !== 1) return;
+
+    const usuarioJaRegistrado = await Meguinha.findOne({discordTag: params[0]});
 
     if(usuarioJaRegistrado) return "Usuário já registrado!";
 
-    //users.insert({})
+    Meguinha.create({discordTag: params[0]});
     
     return "Usuário cadastrado com sucesso!";
 }
 
+function tratarParams(params) {
+    if(!params) return;
 
-
+    return params
+        .join(" ")
+        .split("/")
+        .map(param => param.trim());
+}
 
 const doc = "Lista de comandos: Registrar um usuário: .a registar {DISCORDTAG} | Adicionar uma conquista .a newConquista {NOMEDACONQUISTA} {PONTUACAO} | Mostrar leaderboard: .a leaderboard" +
 "| Atribuir uma conquista pra alguém: .a setConquista {NOMEDACONQUISTA} {DISCORDTAG} | Remover uma conquista de alguém: .a removeConquista {DISCORDTAG} {NOMEDACONQUISTA}" + 
