@@ -46,6 +46,7 @@ client.on("message", async msg => {
             await msg.channel.send("ainda n ta pronto");
             return;   
         case 'setConquista':
+            await registrarMeguinha(paramsTratados);
             await msg.channel.send("ainda n ta pronto");
             return;              
         case 'updateConquista':
@@ -63,13 +64,15 @@ async function registrarMeguinha(params) {
 
     if(!params || params.length !== 1) return;
 
-    const usuarioJaRegistrado = await Meguinha.findOne({discordTag: params[0]});
-
-    if(usuarioJaRegistrado) return "Usuário já registrado!";
+    if(usuarioJaRegistrado(params[0])) return "Usuário já registrado!";
 
     Meguinha.create({discordTag: params[0]});
     
     return "Usuário cadastrado com sucesso!";
+}
+
+async function usuarioJaRegistrado(discordTag) {
+    return await Meguinha.findOne({discordTag});
 }
 
 function tratarParams(params) {
@@ -81,6 +84,6 @@ function tratarParams(params) {
         .map(param => param.trim());
 }
 
-const doc = "Lista de comandos: Registrar um usuário: .a registar {DISCORDTAG} | Adicionar uma conquista .a newConquista {NOMEDACONQUISTA} {PONTUACAO} | Mostrar leaderboard: .a leaderboard" +
-"| Atribuir uma conquista pra alguém: .a setConquista {NOMEDACONQUISTA} {DISCORDTAG} | Remover uma conquista de alguém: .a removeConquista {DISCORDTAG} {NOMEDACONQUISTA}" + 
-"| Atualizar pontuação da conquista: .a updateConquita {NOMEDACONQUISTA} {PONTUACAO}";
+const doc = "Lista de comandos: Registrar um usuário: .a registrar {DISCORDTAG} | Adicionar uma conquista .a newConquista {NOMEDACONQUISTA} {PONTUACAO} | Mostrar leaderboard: .a leaderboard" +
+"| Atribuir uma conquista pra alguém: .a setConquista {DISCORDTAG}/{NOMEDACONQUISTA} | Remover uma conquista de alguém: .a removeConquista {DISCORDTAG} {NOMEDACONQUISTA}" + 
+"| Atualizar pontuação da conquista: .a updateConquita {NOMEDACONQUISTA}/{PONTUACAO}";
