@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
-const { clientId, guildId, token, connectionString } = require('../config.json');
-const Meguinha = require('./models/meguinha');
-const Conquista = require('./models/conquista');
+const { token, connectionString } = require('../config.json');
 
 const client = new Discord.Client({ intents: ['DIRECT_MESSAGES', 'GUILD_MESSAGES'] });
 
@@ -15,8 +13,6 @@ client.once('ready', () => {
         .catch(error => console.log(error));
 });
 
-//const commands = [".r", ".help"];
-//if(!commands.includes(msg.toString())) await msg.channel.send("Ta tentando falar comigo? Manda um .help que eu te ajudo");
 
 client.on("message", async msg => {
     if (msg.author.bot) return;
