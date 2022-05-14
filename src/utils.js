@@ -2,11 +2,11 @@ const Meguinha = require('./models/meguinha');
 const Conquista = require('./models/conquista');
 
 async function usuarioJaRegistrado(discordTag) {
-    return await Meguinha.findOne({ discordTag });
+    return Meguinha.findOne({discordTag});
 }
 
 async function conquistaJaRegistrado(nome) {
-    return await Conquista.findOne({ nome });
+    return Conquista.findOne({nome});
 }
 
 async function validarUsuario(discordTag) {
@@ -27,7 +27,6 @@ function validarParametros(params, numeroEsperado) {
 
 module.exports = {
     usuarioJaRegistrado,
-    conquistaJaRegistrado,
     validarUsuario,
     validarConquista,
     validarParametros

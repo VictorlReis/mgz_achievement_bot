@@ -15,7 +15,7 @@ async function registrarMeguinha(params) {
 
     if (await utils.usuarioJaRegistrado(params[0])) return "Usuário já registrado!";
 
-    Meguinha.create({ discordTag: params[0] });
+    await Meguinha.create({discordTag: params[0]});
 
     return "Usuário cadastrado com sucesso!";
 }

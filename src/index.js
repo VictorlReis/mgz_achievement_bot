@@ -43,8 +43,7 @@ function tratarMensagem(msg) {
 
     const paramsTratados = tratarParams(params);
 
-    return { command, paramsTratados };    
-    
+    return { command, paramsTratados };
 }
 
 client.login(token);
