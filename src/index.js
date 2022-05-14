@@ -15,7 +15,7 @@ client.once('ready', () => {
 
 client.on("message", async msg => {
     
-    const { command, params } = tratarMensagem();a
+    const { command, params } = tratarMensagem();
 
     try {
         const commandFile = require(`./commands/${command}.js`);
