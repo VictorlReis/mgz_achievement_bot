@@ -13,10 +13,12 @@ async function setConquista(params) {
     const paramValido = validarParametros(params, 2);
     if (paramValido) return paramValido;
 
-    const [discordTag, conquista, ...xs] = params;
+    const [discordTag, nomeConquista, ...xs] = params;
 
-    if (!validarConquista(conquista) || !validarUsuario(discordTag)) return `conquista ou usuário invalidos`;
+    const conquista = validarConquista(conquista)
+
+    if (!conquista || !validarUsuario(discordTag)) return `conquista ou usuário invalidos`;
 
     Meguinha.findOneAndUpdate({ discordTag }, { $push: { conquistas: conquista } })
-    return `@discordTag agora tem a conquista ${conquista} parabéns!!!`
+    return `@discordTag agora tem a conquista ${nomeConquista} parabéns!!!`
 }
