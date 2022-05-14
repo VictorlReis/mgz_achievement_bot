@@ -15,31 +15,34 @@ client.once('ready', () => {
         .catch(error => console.log(error));
 });
 
-//const commands = [".r", ".help"];
-//if(!commands.includes(msg.toString())) await msg.channel.send("Ta tentando falar comigo? Manda um .help que eu te ajudo");
-
 client.on("message", async msg => {
-    if (msg.author.bot) return;
-    if (msg.channel.type === "dm") return;
-
-    const mensagem = msg.toString();
-
-    if (!mensagem) return;
-
-    const [a, command, ...params] = mensagem.split(" ");
-
-    if (!a.includes('.a')) return;
-
-    const paramsTratados = tratarParams(params);
+    
+    const { command, params } = tratarMensagem();
 
     try {
         const commandFile = require(`./commands/${command}.js`);
-        commandFile.run(client, msg, paramsTratados);
+        commandFile.run(client, msg, params);
     } catch (err) {
         msg.channel.send("Ta tentando falar comigo? Manda um .a help que eu te ajudo");
         console.log(`(${command}) Error: ${err}`);
     }
 })
+
+function tratarMensagem(msg) {
+    if (msg.author.bot) return null;
+    if (msg.channel.type === "dm") return null;
+
+    const mensagem = msg.toString();
+    if(!mensagem) return null;
+
+    const [a, command, ...params] = mensagem.split(" ");
+    if (!a.includes('.a')) return null;
+
+    const paramsTratados = tratarParams(params);
+
+    return { command, paramsTratados };    
+    
+}
 
 client.login(token);
 
