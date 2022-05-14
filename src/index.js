@@ -15,7 +15,9 @@ client.once('ready', () => {
 
 client.on("message", async msg => {
     
-    const { command, params } = tratarMensagem();
+    const { command, params } = tratarMensagem(msg);
+
+    if(!command) return;
 
     try {
         const commandFile = require(`./commands/${command}.js`);
@@ -27,14 +29,17 @@ client.on("message", async msg => {
 })
 
 function tratarMensagem(msg) {
-    if (msg.author.bot) return null;
-    if (msg.channel.type === "dm") return null;
+
+    const returnError = { command: undefined };
+
+    if (msg.author.bot) return returnError;
+    if (msg.channel.type === "dm") return returnError;
 
     const mensagem = msg.toString();
-    if(!mensagem) return null;
+    if(!mensagem) return returnError;
 
     const [a, command, ...params] = mensagem.split(" ");
-    if (!a.includes('.a')) return null;
+    if (!a.includes('.a')) return returnError;
 
     const paramsTratados = tratarParams(params);
 
