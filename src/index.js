@@ -14,10 +14,10 @@ client.once('ready', () => {
 });
 
 client.on("message", async msg => {
-    
+
     const { command, params } = tratarMensagem(msg);
 
-    if(!command) return;
+    if (!command) return;
 
     try {
         const commandFile = require(`./commands/${command}.js`);
@@ -25,6 +25,7 @@ client.on("message", async msg => {
     } catch (err) {
         msg.channel.send("Ta tentando falar comigo? Manda um .a help que eu te ajudo");
         console.log(`(${command}) Error: ${err}`);
+        console.log(err)
     }
 })
 
@@ -36,7 +37,7 @@ function tratarMensagem(msg) {
     if (msg.channel.type === "dm") return returnError;
 
     const mensagem = msg.toString();
-    if(!mensagem) return returnError;
+    if (!mensagem) return returnError;
 
     const [a, command, ...params] = mensagem.split(" ");
     if (!a.includes('.a')) return returnError;
