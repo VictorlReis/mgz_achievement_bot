@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
-const { clientId, guildId, token, connectionString } = require('../config.json');
-const Meguinha = require('./models/meguinha');
-const Conquista = require('./models/conquista');
+const { token, connectionString } = require('../config.json');
 
 const client = new Discord.Client({ intents: ['DIRECT_MESSAGES', 'GUILD_MESSAGES'] });
 
@@ -17,7 +15,7 @@ client.once('ready', () => {
 
 client.on("message", async msg => {
     
-    const { command, params } = tratarMensagem();
+    const { command, params } = tratarMensagem();a
 
     try {
         const commandFile = require(`./commands/${command}.js`);
