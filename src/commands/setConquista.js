@@ -15,7 +15,7 @@ async function setConquista(params) {
 
     const [discordTag, nomeConquista, ...xs] = params;
 
-    const conquista = validarConquista(conquista)
+    const conquista = validarConquista(conquista);
 
     if (!conquista || !await validarUsuario(discordTag)) return `conquista ou usuário inválidos`;
 

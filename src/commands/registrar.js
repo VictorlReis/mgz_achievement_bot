@@ -3,19 +3,20 @@ const Meguinha = require('../models/meguinha');
 const utils = require('../utils')
 
 module.exports.run = async (client, msg, params) => {
-    const doc = await registrarMeguinha();
+
+    const doc = await registrarMeguinha(msg.author, params);
 
     msg.channel.send(doc);
 };
 
 
-async function registrarMeguinha(params) {
+async function registrarMeguinha(author) {
+    const discordTag = author.username + "#" + author.discriminator;
+    const discordId = author.id;
 
-    if (!params || params.length !== 1) return 'parametros invalidos';
+    if (await utils.usuarioJaRegistrado(discordId)) return "Usuário já registrado!";
 
-    if (await utils.usuarioJaRegistrado(params[0])) return "Usuário já registrado!";
-
-    await Meguinha.create({discordTag: params[0]});
+    await Meguinha.create({discordId, discordTag});
 
     return "Usuário cadastrado com sucesso!";
 }

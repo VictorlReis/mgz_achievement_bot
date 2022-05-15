@@ -7,8 +7,8 @@ const fs = require('fs');
 const axios = require('axios').default;
 const csv = require("csvtojson");
 
-async function usuarioJaRegistrado(discordTag) {
-    return Meguinha.findOne({ discordTag });
+async function usuarioJaRegistrado(discordId) {
+    return Meguinha.findOne({ discordId });
 }
 
 async function conquistaJaRegistrado(nome) {

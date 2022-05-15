@@ -14,7 +14,6 @@ client.once('ready', () => {
 });
 
 client.on("message", async msg => {
-
     const { command, params } = tratarMensagem(msg);
 
     if (!command) return;
