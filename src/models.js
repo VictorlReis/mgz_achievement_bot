@@ -7,6 +7,7 @@ const Conquista = mongoose.model('Conquista', {
 
 const Meguinha = mongoose.model('Meguinha', {
     discordTag: String,
+    discordId: String,
     conquistas: []
 });
 

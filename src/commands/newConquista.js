@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const Conquista = require('../models/conquista');
-const { validarConquista, validarParametros, baixarArquivoCSV, getJsonFromCSVFile } = require('../utils')
+const { validarConquista, validarParametros } = require('../utils')
+const {baixarArquivoCSV, getJsonFromCSVFile} = require("../Repositories/FileRepository");
 
 
 module.exports.run = async (client, msg, params) => {
@@ -15,7 +16,6 @@ module.exports.run = async (client, msg, params) => {
     }
 };
 
-
 async function registrarConquista(params) {
     const paramValido = validarParametros(params, 2);
 
@@ -23,18 +23,18 @@ async function registrarConquista(params) {
 
     const [nome, pontuacao, ...xs] = params;
 
-
     if (await validarConquista(nome)) return "Conquista já registrada!";
 
     Conquista.create({ nome, pontuacao });
 
     return "Conquista cadastrada com sucesso!";
 }
+
 //@todo fix bulkinsert
 async function registrarConquistas(file) {
     const { url } = file;
 
-    const consquistas = await serializarCSV(url)
+    const consquistas = await serializarCSV(url);
 
     if (typeof consquistas === 'string') return consquistas;
 

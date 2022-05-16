@@ -1,24 +1,47 @@
-const Discord = require("discord.js");
-const { validarConquista, validarUsuario, validarParametros } = require('../utils')
+const {  validarParametros } = require('../utils')
+const {findUserByDiscordTag} = require("../Repositories/UserRepository");
+const {findAchievementByName} = require("../Repositories/AchievementRepository");
 
 
 module.exports.run = async (client, msg, params) => {
-    const output = await setConquista(params);
+    const output = await setConquista(msg, params);
 
     msg.channel.send(output);
 };
 
-
-async function setConquista(params) {
+async function setConquista(msg, params) {
     const paramValido = validarParametros(params, 2);
     if (paramValido) return paramValido;
 
-    const [discordTag, nomeConquista, ...xs] = params;
+    const [discordTag, achievementName] = params;
 
-    const conquista = validarConquista(conquista);
+    const user = getUser(discordTag);
+    if(!user) return "Discord Tag inválido ou não cadastrado";
 
-    if (!conquista || !await validarUsuario(discordTag)) return `conquista ou usuário inválidos`;
+    const achievement = getAchievement(achievementName);
 
-    Meguinha.findOneAndUpdate({ discordTag }, { $push: { conquistas: conquista } })
-    return `@discordTag agora tem a conquista ${nomeConquista} parabéns!!!`
+    if(!achievement) return `Conquista não cadastrada.`;
+
+    Meguinha.findOneAndUpdate({ discordTag }, { $push: { conquistas: achievement } });
+    setDiscordRole(msg, achievementName, user.discordId);
+
+    return `@discordTag agora tem a conquista ${achievementName} parabéns!!!`
+}
+
+async function getUser(discordTag) {
+    if(!discordTag) return undefined;
+    return await findUserByDiscordTag(discordTag);
+}
+
+async function getAchievement(achievementName) {
+    if(!achievementName) return undefined;
+    return await findAchievementByName(achievementName);
+}
+
+function setDiscordRole(msg, achievementName, discordId) {
+    const guild = msg.channel.guild;
+    const role = guild.roles.cache.find(r => r.name === achievementName);
+    const member = guild.members.cache.get(discordId);
+
+    member.roles.add(role);
 }
