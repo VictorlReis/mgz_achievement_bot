@@ -1,6 +1,7 @@
-const {  validarParametros } = require('../utils')
-const {findUserByDiscordTag} = require("../Repositories/UserRepository");
-const {findAchievementByName} = require("../Repositories/AchievementRepository");
+const { validarParametros } = require('../utils')
+const { findUserByDiscordTag } = require("../Repositories/UserRepository");
+const { findAchievementByName } = require("../Repositories/AchievementRepository");
+const Meguinha = require('../models/meguinha');
 
 
 module.exports.run = async (client, msg, params) => {

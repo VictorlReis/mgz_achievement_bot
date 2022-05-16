@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const Conquista = require('../models/conquista');
 const { validarConquista, validarParametros } = require('../utils')
 const {baixarArquivoCSV, getJsonFromCSVFile} = require("../Repositories/FileRepository");
@@ -21,11 +20,11 @@ async function registrarConquista(params) {
 
     if (paramValido) return paramValido;
 
-    const [nome, pontuacao, ...xs] = params;
+    const [nome, pontuacao] = params;
 
     if (await validarConquista(nome)) return "Conquista já registrada!";
 
-    Conquista.create({ nome, pontuacao });
+    await Conquista.create({ nome, pontuacao });
 
     return "Conquista cadastrada com sucesso!";
 }

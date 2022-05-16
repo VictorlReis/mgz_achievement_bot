@@ -1,7 +1,6 @@
-const Discord = require("discord.js");
 
 
-module.exports.run = async (client, msg, params) => {
+module.exports.run = async (client, msg, _) => {
     const doc = "Lista de comandos:\n" +
         "Para se registrar, digite: .a registrar \n" +
         "Adicionar uma conquista .a newConquista {NOMEDACONQUISTA} {PONTUACAO} \n" +

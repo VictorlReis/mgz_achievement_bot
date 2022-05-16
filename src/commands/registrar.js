@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const Meguinha = require('../models/meguinha');
 const utils = require('../utils')
 
