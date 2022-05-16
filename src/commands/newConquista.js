@@ -33,13 +33,13 @@ async function registrarConquista(params) {
 async function registrarConquistas(file) {
     const { url } = file;
 
-    const consquistas = await serializarCSV(url);
+    const conquistas = await serializarCSV(url);
 
-    if (typeof consquistas === 'string') return consquistas;
+    if (typeof conquistas === 'string') return conquistas;
 
-    const bulkInsert = consquistas.map(consquista => ({
+    const bulkInsert = conquistas.map(conquista => ({
         'updateOne': {
-            'filter': { 'nome': consquista.nome, 'pontuacao': consquista.pontuacao },
+            'filter': { 'nome': conquista.nome, 'pontuacao': conquista.pontuacao },
             'update': consquista,
             'upsert': true
         }
