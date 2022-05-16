@@ -40,7 +40,7 @@ async function registrarConquistas(file) {
     const bulkInsert = conquistas.map(conquista => ({
         'updateOne': {
             'filter': { 'nome': conquista.nome, 'pontuacao': conquista.pontuacao },
-            'update': consquista,
+            'update': conquista,
             'upsert': true
         }
     }));
