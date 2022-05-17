@@ -29,7 +29,6 @@ async function registrarConquista(params) {
     return "Conquista cadastrada com sucesso!";
 }
 
-//@todo fix bulkinsert
 async function registrarConquistas(file) {
     const { url } = file;
 
@@ -46,10 +45,10 @@ async function registrarConquistas(file) {
     }));
 
     try {
-        await Conquista.collection.bulkWrite(bulkInsert)
-        return "Conquistas cadastradas com sucesso"
+        await Conquista.bulkWrite(bulkInsert);
+        return "Conquistas cadastradas com sucesso";
     } catch (error) {
-        return `ocorreu um erro liga no devops ${error.message}`
+        return `ocorreu um erro liga no devops ${error.message}`;
     }
 }
 
@@ -58,8 +57,8 @@ async function serializarCSV(url) {
 
     try {
         const path = await baixarArquivoCSV(url);
-        return getJsonFromCSVFile(path)
+        return getJsonFromCSVFile(path);
     } catch (error) {
-        return `ocorreu um erro liga no devops ${error.message}`
+        return `ocorreu um erro liga no devops ${error.message}`;
     }
 }
