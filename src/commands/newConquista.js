@@ -1,4 +1,4 @@
-const Conquista = require('../models/conquista');
+const {Conquista} = require('../models/conquista');
 const { validarConquista, validarParametros } = require('../utils')
 const {baixarArquivoCSV, getJsonFromCSVFile} = require("../Repositories/FileRepository");
 

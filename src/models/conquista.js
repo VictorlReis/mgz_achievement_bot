@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
 
-const conquista = new mongoose.Schema({
+const ConquistaSchema = new mongoose.Schema({
     nome: {type: String},
     pontuacao : {type: Number}
 })
 
-module.exports = Conquista = mongoose.model('conquista', conquista);
+Conquista = mongoose.model('conquista', ConquistaSchema);
+
+module.exports = {
+    Conquista,
+    ConquistaSchema
+}

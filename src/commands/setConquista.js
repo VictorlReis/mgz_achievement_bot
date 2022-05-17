@@ -23,7 +23,7 @@ async function setConquista(msg, params) {
 
     if(!achievement) return `Conquista não cadastrada.`;
 
-    Meguinha.findOneAndUpdate({ discordTag }, { $push: { conquistas: achievement } });
+    await Meguinha.findOneAndUpdate({ discordTag }, { $addToSet: { conquistas: achievement } });
     setDiscordRole(msg, achievementName, user.discordId);
 
     return `<@${user.discordId}> agora tem a conquista ${achievementName} parabéns!!!`

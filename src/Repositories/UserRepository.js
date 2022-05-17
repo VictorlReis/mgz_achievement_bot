@@ -8,7 +8,12 @@ async function findUserByDiscordTag(discordTag) {
     return Meguinha.findOne({ discordTag });
 }
 
+async function getAllUsers() {
+    return Meguinha.find({});
+}
+
 module.exports = {
     findUserByDiscordId,
-    findUserByDiscordTag
+    findUserByDiscordTag,
+    getAllUsers
 }

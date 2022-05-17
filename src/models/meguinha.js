@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const {ConquistaSchema} = require('./conquista');
 
 const meguinha = new mongoose.Schema({
     discordTag: { type: String },
     discordId: {type: String },
-    conquistas: { type: Array, default: []}
+    conquistas: [ConquistaSchema]
 })
 
 module.exports = Meguinha = mongoose.model("meguinha", meguinha);

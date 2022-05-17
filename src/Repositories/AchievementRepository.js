@@ -1,4 +1,4 @@
-const Conquista = require("../models/conquista");
+const {Conquista} = require("../models/conquista");
 
 async function findAchievementByName(name) {
     return Conquista.findOne({ nome: name });

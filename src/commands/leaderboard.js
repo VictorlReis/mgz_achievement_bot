@@ -1,7 +1,8 @@
+const {getAllUsers} = require("../Repositories/UserRepository");
 
 
 module.exports.run = async (client, msg, params) => {
-    const doc = "ainda n ta pronto";
+    const users = await getAllUsers();
 
-    msg.channel.send(doc);
+    msg.channel.send(users);
 };

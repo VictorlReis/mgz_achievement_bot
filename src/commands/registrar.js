@@ -1,5 +1,6 @@
 const Meguinha = require('../models/meguinha');
 const utils = require('../utils')
+const {findUserByDiscordId} = require("../Repositories/UserRepository");
 
 module.exports.run = async (client, msg, params) => {
 
@@ -12,7 +13,7 @@ async function registrarMeguinha(author) {
     const discordTag = author.username + "#" + author.discriminator;
     const discordId = author.id;
 
-    if (await utils.usuarioJaRegistrado(discordId)) return "Usuário já registrado!";
+    if (await findUserByDiscordId(discordId)) return "Usuário já registrado!";
 
     await Meguinha.create({discordId, discordTag});
 
