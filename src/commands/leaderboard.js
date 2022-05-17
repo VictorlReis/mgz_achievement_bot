@@ -1,7 +1,7 @@
 const {getAllUsers} = require("../Repositories/UserRepository");
 
 
-module.exports.run = async (client, msg, params) => {
+module.exports.run = async (client, msg) => {
     const users = await getAllUsers();
 
     const usersView = [];
@@ -11,7 +11,7 @@ module.exports.run = async (client, msg, params) => {
         users[i].conquistas.forEach(c => pontuacaoTotal += c.pontuacao);
 
         usersView.push({
-            id: users[i].discordId,
+            id: users[i].discordTag,
             pontuacaoTotal
         });
     }
