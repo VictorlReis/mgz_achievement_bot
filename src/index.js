@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
-const { token, connectionString } = require('../config.json');
+const {token, connectionString} = require('../config.json');
 const sequelize = require('./Database');
-const client = new Discord.Client({ intents: ['DIRECT_MESSAGES', 'GUILD_MESSAGES'] });
+const client = new Discord.Client({intents: ['DIRECT_MESSAGES', 'GUILD_MESSAGES']});
+const {adminMiddleware} = require('./middleware/admin.middleware');
 
 client.once('ready', async () => {
     await assertDatabaseConnectionOk();
@@ -10,13 +11,14 @@ client.once('ready', async () => {
 
 client.on("message", async msg => {
 
-    const { command, paramsTratados } = tratarMensagem(msg);
+    const {command, paramsTratados} = tratarMensagem(msg);
 
     if (!command) return;
 
     try {
         const commandFile = require(`./commands/${command}.js`);
-        commandFile.run(client, msg, paramsTratados);
+        const runCmd = () => commandFile.run(client, msg, paramsTratados);
+        adminMiddleware(command, msg, runCmd);
     } catch (err) {
         msg.channel.send("Ta tentando falar comigo? Manda um .a help que eu te ajudo");
         console.log(`(${command}) Error: ${err}`);
@@ -26,7 +28,7 @@ client.on("message", async msg => {
 
 function tratarMensagem(msg) {
 
-    const returnError = { command: undefined };
+    const returnError = {command: undefined};
 
     if (msg.author.bot) return returnError;
     if (msg.channel.type === "dm") return returnError;
@@ -40,7 +42,7 @@ function tratarMensagem(msg) {
 
     const paramsTratados = tratarParams(params);
 
-    return { command, paramsTratados };
+    return {command, paramsTratados};
 }
 
 client.login(token);
