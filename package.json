@@ -17,6 +17,7 @@
     "csvtojson": "^2.0.10",
     "discord-api-types": "^0.32.1",
     "discord.js": "^12.5.3",
+    "discord.js-pagination": "^1.0.3",
     "dotenv": "^16.0.1",
     "mongodb": "^4.6.0",
     "mongoose": "^6.3.3",
