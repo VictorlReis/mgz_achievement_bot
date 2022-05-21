@@ -1,4 +1,5 @@
-const Meguinha = require('../models/meguinha');
+const {models} = require('../Database');
+const {meguinha} = models;
 const {createDiscordTag} = require('../utils')
 const {findUserByDiscordId} = require("../Repositories/UserRepository");
 
@@ -15,7 +16,7 @@ async function registrarMeguinha(author) {
 
     if (await findUserByDiscordId(discordId)) return "Usuário já registrado!";
 
-    await Meguinha.create({discordId, discordTag});
+    await meguinha.create({discordId, discordTag});
 
     return "Usuário cadastrado com sucesso!";
 }

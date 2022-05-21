@@ -1,10 +1,20 @@
-const mongoose = require('mongoose');
-const {ConquistaSchema} = require('./conquista');
+const { DataTypes } = require('sequelize');
 
-const meguinha = new mongoose.Schema({
-    discordTag: { type: String },
-    discordId: {type: String },
-    conquistas: [ConquistaSchema]
-})
-
-module.exports = Meguinha = mongoose.model("meguinha", meguinha);
+module.exports = (sequelize) => {
+    sequelize.define('meguinha', {
+        id: {
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
+            type: DataTypes.INTEGER
+        },
+        discordTag: {
+            allowNull: false,
+            type: DataTypes.STRING,
+        },
+        discordId: {
+            allowNull: false,
+            type: DataTypes.STRING,
+        }
+    });
+};
