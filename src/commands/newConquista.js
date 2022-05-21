@@ -7,16 +7,16 @@ const {conquista} = models;
 module.exports.run = async (client, msg, params) => {
     if (msg.attachments.size > 0) {
         const file = msg.attachments.get(msg.attachments.lastKey());
-        const doc = await registrarConquistas(file)
+        const doc = await registrarConquistas(file, msg)
         msg.channel.send(doc);
     } else {
-        const doc = await registrarConquista(params);
+        const doc = await registrarConquista(params, msg);
 
         msg.channel.send(doc);
     }
 };
 
-async function registrarConquista(params) {
+async function registrarConquista(params, msg) {
     const paramValido = validarParametros(params, 2);
 
     if (paramValido) return paramValido;
@@ -26,20 +26,46 @@ async function registrarConquista(params) {
     try {
         if (await findAchievementByName(nome)) return "Conquista já registrada!";
         await conquista.create({nome, pontuacao});
+        await createRoleIfNeeded(msg, nome);
         return "Conquista cadastrada com sucesso!";
     } catch (error) {
         return `ocorreu um erro liga no devops ${error.message}`;
     }
 }
 
-async function registrarConquistas(file) {
+async function createRoleIfNeeded(msg, achievementName) {
+    const guild = msg.channel.guild;
+    const role = guild.roles.cache.find(r => r.name === achievementName);
+
+    if (role) return;
+
+    try {
+        await guild.roles.create({
+            data: {
+                name: achievementName,
+            },
+        })
+    } catch (error) {
+        msg.channel.send(`erro ao criar cargo ${achievementName} crie manualmente`);
+        console.error({error})
+    }
+}
+
+async function registrarConquistas(file, msg) {
     const {url} = file;
 
     const conquistas = await serializarCSV(url);
 
     if (typeof conquistas === 'string') return conquistas;
 
-    const bulkInsert = conquistas.map(conquista => ({nome: conquista.nome, pontuacao: conquista.pontuacao}))
+    const bulkInsert = conquistas.map(async conquista => {
+
+        await createRoleIfNeeded(msg, conquista.nome);
+        return {
+            nome: conquista.nome,
+            pontuacao: conquista.pontuacao
+        }
+    })
 
     try {
         await conquista.bulkCreate(bulkInsert);
