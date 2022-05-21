@@ -1,25 +1,21 @@
 const {getAllUsers} = require("../Repositories/UserRepository");
 
-
 module.exports.run = async (client, msg) => {
     const users = await getAllUsers();
 
-    const usersView = [];
-    for (let i = 0; i < users.length; i++) {
-        let pontuacaoTotal = 0;
+    const userView = users.map(user => {
+        const serialUser = user.toJSON()
+        return {
+            name: serialUser.discordTag,
+            total: serialUser.conquista
+                .map(x => x.pontuacao)
+                .reduce((prev, cur) => prev + cur, 0)
+        }
+    })
 
-        users[i].conquistas.forEach(c => pontuacaoTotal += c.pontuacao);
+    userView.sort((a, b) => a.total - b.total)
 
-        usersView.push({
-            id: users[i].discordTag,
-            pontuacaoTotal
-        });
-    }
-
-    var i = 1;
-    usersView.forEach(x => {
-        msg.channel.send(`${i}º <@${x.discordTag}> - ${x.pontuacaoTotal} pontos`);
-        i++;
-    });
-
+    userView.forEach((user, index) => {
+        msg.channel.send(`${index + 1}º <@${user.name}> - ${user.total} pontos`);
+    })
 };

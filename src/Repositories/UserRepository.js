@@ -1,15 +1,18 @@
-const Meguinha = require("../models/meguinha");
+const {models} = require('../Database');
+const {meguinha, conquista} = models;
 
 async function findUserByDiscordId(discordId) {
-    return Meguinha.findOne({ discordId });
+    return meguinha.findOne({ where: { discordId } });
 }
 
 async function findUserByDiscordTag(discordTag) {
-    return Meguinha.findOne({ discordTag });
+    return meguinha.findOne({ where: { discordTag } });
 }
 
 async function getAllUsers() {
-    return Meguinha.find({});
+    return meguinha.findAll({
+        include : [conquista]
+    });
 }
 
 module.exports = {

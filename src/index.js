@@ -1,16 +1,11 @@
 const Discord = require('discord.js');
-const mongoose = require('mongoose');
 const { token, connectionString } = require('../config.json');
-
+const sequelize = require('./Database');
 const client = new Discord.Client({ intents: ['DIRECT_MESSAGES', 'GUILD_MESSAGES'] });
 
-client.once('ready', () => {
+client.once('ready', async () => {
+    await assertDatabaseConnectionOk();
     console.log('Ready!');
-    mongoose.connect(connectionString)
-        .then(() => {
-            console.log('Conectou no banco!');
-        })
-        .catch(error => console.log(error));
 });
 
 client.on("message", async msg => {
@@ -57,5 +52,18 @@ function tratarParams(params) {
         .join(" ")
         .split("/")
         .map(param => param.trim());
+}
+
+async function assertDatabaseConnectionOk() {
+    console.log(`Checking database connection...`);
+    try {
+        await sequelize.authenticate();
+        await sequelize.sync();
+        console.log('Database connection OK!');
+    } catch (error) {
+        console.log('Unable to connect to the database:');
+        console.log(error.message);
+        process.exit(1);
+    }
 }
 

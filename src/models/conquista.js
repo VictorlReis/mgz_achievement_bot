@@ -1,13 +1,20 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
 
-const ConquistaSchema = new mongoose.Schema({
-    nome: {type: String},
-    pontuacao : {type: Number}
-})
-
-Conquista = mongoose.model('conquista', ConquistaSchema);
-
-module.exports = {
-    Conquista,
-    ConquistaSchema
-}
+module.exports = (sequelize) => {
+    sequelize.define('conquista', {
+        id: {
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
+            type: DataTypes.INTEGER
+        },
+        nome: {
+            allowNull: false,
+            type: DataTypes.STRING,
+        },
+        pontuacao: {
+            allowNull: false,
+            type: DataTypes.INTEGER,
+        }
+    });
+};

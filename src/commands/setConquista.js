@@ -1,7 +1,8 @@
 const {validarParametros} = require('../utils')
 const {findUserByDiscordTag} = require("../Repositories/UserRepository");
 const {findAchievementByName} = require("../Repositories/AchievementRepository");
-const Meguinha = require('../models/meguinha');
+const {models} = require('../Database');
+const {meguinha} = models;
 
 module.exports = {
     run,
@@ -9,9 +10,12 @@ module.exports = {
 }
 
 async function run(client, msg, params) {
-    const output = await setConquista(msg, params);
-
-    msg.channel.send(output);
+    try {
+        const output = await setConquista(msg, params);
+        msg.channel.send(output);
+    } catch (err) {
+        msg.channel.send(`ocorreu um erro liga no devops ${err.message}`);
+    }
 };
 
 async function setConquista(msg, params) {
@@ -27,7 +31,7 @@ async function setConquista(msg, params) {
 
     if (!achievement) return `Conquista não cadastrada.`;
 
-    await Meguinha.findOneAndUpdate({discordTag}, {$addToSet: {conquistas: achievement}});
+    await user.addConquista(achievement);
     setDiscordRole(msg, achievementName, user.discordId);
 
     return `<@${user.discordId}> agora tem a conquista ${achievementName} parabéns!!!`
