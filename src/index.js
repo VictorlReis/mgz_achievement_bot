@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
-const { clientId, guildId, token, connectionString } = require('../config.json');
-const Meguinha = require('./models/meguinha');
-const Conquista = require('./models/conquista');
+const { token, connectionString } = require('../config.json');
 
 const client = new Discord.Client({ intents: ['DIRECT_MESSAGES', 'GUILD_MESSAGES'] });
 
@@ -15,22 +13,11 @@ client.once('ready', () => {
         .catch(error => console.log(error));
 });
 
-//const commands = [".r", ".help"];
-//if(!commands.includes(msg.toString())) await msg.channel.send("Ta tentando falar comigo? Manda um .help que eu te ajudo");
-
 client.on("message", async msg => {
-    if (msg.author.bot) return;
-    if (msg.channel.type === "dm") return;
 
-    const mensagem = msg.toString();
+    const { command, paramsTratados } = tratarMensagem(msg);
 
-    if (!mensagem) return;
-
-    const [a, command, ...params] = mensagem.split(" ");
-
-    if (!a.includes('.a')) return;
-
-    const paramsTratados = tratarParams(params);
+    if (!command) return;
 
     try {
         const commandFile = require(`./commands/${command}.js`);
@@ -38,50 +25,30 @@ client.on("message", async msg => {
     } catch (err) {
         msg.channel.send("Ta tentando falar comigo? Manda um .a help que eu te ajudo");
         console.log(`(${command}) Error: ${err}`);
-    }
-
-    switch (cmd) {
-        case "help":
-            await msg.channel.send(doc);
-            return;
-        case 'registrar':
-            await msg.channel.send(await registrarMeguinha(paramsTratados));
-            return;
-        case 'newConquista':
-            await msg.channel.send("ainda n ta pronto");
-            return;
-        case 'leaderboard':
-            await msg.channel.send("ainda n ta pronto");
-            return;
-        case 'setConquista':
-            await registrarMeguinha(paramsTratados);
-            await msg.channel.send("ainda n ta pronto");
-            return;
-        case 'updateConquista':
-            await msg.channel.send(paramsTratados);
-            return;
-        default:
-            msg.channel.send("Ta tentando falar comigo? Manda um .a help que eu te ajudo");
-            return;
+        console.log(err)
     }
 })
 
+function tratarMensagem(msg) {
+
+    const returnError = { command: undefined };
+
+    if (msg.author.bot) return returnError;
+    if (msg.channel.type === "dm") return returnError;
+
+    const mensagem = msg.toString();
+
+    if (!mensagem) return returnError;
+
+    const [a, command, ...params] = mensagem.split(" ");
+    if (!a.includes('.a')) return returnError;
+
+    const paramsTratados = tratarParams(params);
+
+    return { command, paramsTratados };
+}
+
 client.login(token);
-
-async function registrarMeguinha(params) {
-
-    if (!params || params.length !== 1) return;
-
-    if (usuarioJaRegistrado(params[0])) return "Usuário já registrado!";
-
-    Meguinha.create({ discordTag: params[0] });
-
-    return "Usuário cadastrado com sucesso!";
-}
-
-async function usuarioJaRegistrado(discordTag) {
-    return await Meguinha.findOne({ discordTag });
-}
 
 function tratarParams(params) {
     if (!params) return;
