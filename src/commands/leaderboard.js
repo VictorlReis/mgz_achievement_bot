@@ -16,7 +16,7 @@ module.exports.run = async (client, msg) => {
         }
     })
 
-    userView.sort((a, b) => a.total - b.total)
+    userView.sort((a, b) => b.total - a.total)
 
     const pages = createPages(userView);
 
@@ -36,7 +36,8 @@ function createPages(userView) {
             page.map((user, userIndex) => {
                 const rank = userIndex + index + 1;
                 return {
-                    value: `${rank === 1 ? `👑 ${rank}` : rank}º <@${user.name}> - ${user.total} pontos`
+                    name: `${rank === 1 ? `👑 ${rank}` : rank}º`,
+                    value: `<@${user.name}> - ${user.total} pontos`
                 }
             })
         )

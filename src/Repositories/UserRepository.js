@@ -1,4 +1,5 @@
 const {models} = require('../Database');
+const {createDiscordTag} = require("../utils");
 const {meguinha, conquista} = models;
 
 async function findUserByDiscordId(discordId) {
@@ -15,8 +16,20 @@ async function getAllUsers() {
     });
 }
 
+async function registrarMeguinha(user) {
+    const discordTag = createDiscordTag(user);
+    const discordId = user.id;
+
+    if (await findUserByDiscordId(discordId)) return "Usuário já registrado!";
+
+    await meguinha.create({discordId, discordTag});
+
+    return "Usuário cadastrado com sucesso!";
+}
+
 module.exports = {
     findUserByDiscordId,
     findUserByDiscordTag,
-    getAllUsers
+    getAllUsers,
+    registrarMeguinha
 }

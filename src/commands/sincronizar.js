@@ -1,5 +1,6 @@
 const {setConquista} = require("./setConquista")
 const {createDiscordTag} = require('../utils')
+const {registrarMeguinha} = require("../Repositories/UserRepository");
 
 module.exports.run = async (client, msg, _) => {
 
@@ -11,6 +12,7 @@ module.exports.run = async (client, msg, _) => {
         for (const key of member._roles) {
             const role = guild.roles.cache.get(key);
             const discordTag = createDiscordTag(member.user);
+            await registrarMeguinha(member.user);
             const output = await setConquista(msg, [discordTag,role.name ]);
             msg.channel.send(output);
         }

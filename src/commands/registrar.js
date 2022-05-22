@@ -1,7 +1,4 @@
-const {models} = require('../Database');
-const {meguinha} = models;
-const {createDiscordTag} = require('../utils')
-const {findUserByDiscordId} = require("../Repositories/UserRepository");
+const {registrarMeguinha} = require("../Repositories/UserRepository");
 
 module.exports.run = async (client, msg, params) => {
 
@@ -10,13 +7,3 @@ module.exports.run = async (client, msg, params) => {
 };
 
 
-async function registrarMeguinha(author) {
-    const discordTag = createDiscordTag(author);
-    const discordId = author.id;
-
-    if (await findUserByDiscordId(discordId)) return "Usuário já registrado!";
-
-    await meguinha.create({discordId, discordTag});
-
-    return "Usuário cadastrado com sucesso!";
-}
