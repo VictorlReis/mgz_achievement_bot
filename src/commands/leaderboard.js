@@ -6,7 +6,7 @@ const paginationEmbed = require('discord.js-pagination');
 module.exports.run = async (client, msg) => {
     const users = await getAllUsers();
 
-    if(!users) {
+    if(users.length === 0) {
         msg.channel.send('Nenhum usuario cadastrado');
         return;
     }
