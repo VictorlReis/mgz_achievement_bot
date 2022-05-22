@@ -1,7 +1,7 @@
 const adminCommands = new Set([
     "setConquista",
     "newConquista",
-    // "sincronizar",
+    "sincronizar",
     "updateConquista",
 ]);
 
