@@ -1,51 +1,74 @@
-const {Conquista} = require('../models/conquista');
-const { validarConquista, validarParametros } = require('../utils')
+const {validarParametros} = require('../utils')
 const {baixarArquivoCSV, getJsonFromCSVFile} = require("../Repositories/FileRepository");
-
+const {models} = require('../Database');
+const {findAchievementByName} = require("../Repositories/AchievementRepository");
+const {conquista} = models;
 
 module.exports.run = async (client, msg, params) => {
-    if (msg.attachments) {
+    if (msg.attachments.size > 0) {
         const file = msg.attachments.get(msg.attachments.lastKey());
-        const doc = await registrarConquistas(file)
+        const doc = await registrarConquistas(file, msg)
         msg.channel.send(doc);
     } else {
-        const doc = registrarConquista(params);
+        const doc = await registrarConquista(params, msg);
 
         msg.channel.send(doc);
     }
 };
 
-async function registrarConquista(params) {
+async function registrarConquista(params, msg) {
     const paramValido = validarParametros(params, 2);
 
     if (paramValido) return paramValido;
 
     const [nome, pontuacao] = params;
 
-    if (await validarConquista(nome)) return "Conquista já registrada!";
-
-    await Conquista.create({ nome, pontuacao });
-
-    return "Conquista cadastrada com sucesso!";
+    try {
+        if (await findAchievementByName(nome)) return "Conquista já registrada!";
+        await conquista.create({nome, pontuacao});
+        await createRoleIfNeeded(msg, nome);
+        return "Conquista cadastrada com sucesso!";
+    } catch (error) {
+        return `ocorreu um erro liga no devops ${error.message}`;
+    }
 }
 
-async function registrarConquistas(file) {
-    const { url } = file;
+async function createRoleIfNeeded(msg, achievementName) {
+    const guild = msg.channel.guild;
+    const role = guild.roles.cache.find(r => r.name === achievementName);
+
+    if (role) return;
+
+    try {
+        await guild.roles.create({
+            data: {
+                name: achievementName,
+            },
+        })
+    } catch (error) {
+        msg.channel.send(`erro ao criar cargo ${achievementName} crie manualmente`);
+        console.error({error})
+    }
+}
+
+async function registrarConquistas(file, msg) {
+    const {url} = file;
 
     const conquistas = await serializarCSV(url);
 
     if (typeof conquistas === 'string') return conquistas;
 
-    const bulkInsert = conquistas.map(conquista => ({
-        'updateOne': {
-            'filter': { 'nome': conquista.nome, 'pontuacao': conquista.pontuacao },
-            'update': conquista,
-            'upsert': true
+    const bulkInsert = conquistas.map(async conquista => {
+
+        await createRoleIfNeeded(msg, conquista.nome);
+        return {
+            nome: conquista.nome,
+            pontuacao: conquista.pontuacao
         }
-    }));
+    })
 
     try {
-        await Conquista.bulkWrite(bulkInsert);
+        await conquista.bulkCreate(bulkInsert);
         return "Conquistas cadastradas com sucesso";
     } catch (error) {
         return `ocorreu um erro liga no devops ${error.message}`;
