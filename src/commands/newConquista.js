@@ -63,7 +63,7 @@ async function registrarConquistas(file, msg) {
         await createRoleIfNeeded(msg, conquista.nome);
         return {
             nome: conquista.nome,
-            pontuacao: Number(conquista.pontuacao)
+            pontuacao: conquista.pontuacao
         }
     }))
 
