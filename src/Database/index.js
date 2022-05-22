@@ -17,6 +17,9 @@ app.get("/", (req, res) => {
     res.send("Bot de conquistas mgz");
 });
 
+const Port = process.env.PORT || 3001;
+
+app.listen(Port, () => console.log("Server started"));
 
 const sequelize = new Sequelize(connectionString, {
     dialectOptions: {
