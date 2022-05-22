@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const {token, connectionString} = require('../config.json');
+const {token} = require('../config.json');
 const sequelize = require('./Database');
 const client = new Discord.Client({intents: ['DIRECT_MESSAGES', 'GUILD_MESSAGES']});
 const {adminMiddleware} = require('./middleware/admin.middleware');

@@ -2,5 +2,5 @@
     "token": "OTc0NjM5NjQ0MzA0MTAxMzc2.GUPh9s.hSisQvxyWeAG55R-xc89XNF-0zknEcFNVwa4yI",
     "clientId": "974639644304101376",
     "guildId": "974646748435853402",
-    "connectionString": "mongodb+srv://mgz:mgz@cluster0.56sl0.mongodb.net/achievementmgzbot?retryWrites=true&w=majority"
+    "connectionString": "postgres://znzgkwfxciqksr:5f01487803d000a8214b77d30fb1ce1b5d61ceedc8d97818193d3c09f3a73e39@ec2-54-165-90-230.compute-1.amazonaws.com:5432/d51ep86cothjtc"
 }

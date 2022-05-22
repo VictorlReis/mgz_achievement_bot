@@ -1,11 +1,14 @@
-const { Sequelize } = require('sequelize');
-const { applyExtraSetup } = require('./ExtraSetup');
+const {Sequelize} = require('sequelize');
+const {applyExtraSetup} = require('./ExtraSetup');
+const {connectionString} = require('../../config.json');
 
-const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: 'mgz_achievement_bot/db.sqlite',
-    logQueryParameters: true,
-    benchmark: true,
+const sequelize = new Sequelize(connectionString, {
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
+    },
     logging: (...msg) => console.log(msg)
 });
 
