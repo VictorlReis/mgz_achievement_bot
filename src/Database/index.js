@@ -2,6 +2,22 @@ const {Sequelize} = require('sequelize');
 const {applyExtraSetup} = require('./ExtraSetup');
 const {connectionString} = require('../../config.json');
 
+const express = require("express");
+
+const cors = require("cors");
+
+
+const app = express();
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+app.use(cors());
+
+app.get("/", (req, res) => {
+    res.send("Bot de conquistas mgz");
+});
+
+
 const sequelize = new Sequelize(connectionString, {
     dialectOptions: {
         ssl: {
