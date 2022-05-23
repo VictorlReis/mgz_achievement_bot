@@ -11,6 +11,7 @@ module.exports.run = async (client, msg, _) => {
     const members = guild.members;
     try {
         const conquistas = await getAllAchievements();
+        const conquistasNames = conquistas.map(c => c.dataValues.nome);
         const usersFromServer = Array.from(members.cache.values()).filter(user => !user.bot);
         const bulkInsertUsersObject = usersFromServer
             .map(member => ({
@@ -22,8 +23,8 @@ module.exports.run = async (client, msg, _) => {
 
         for (const member of usersFromServer) {
             const discordTag = createDiscordTag(member.user);
-            const roles = Array.from(member._roles.values())
-                .filter(v => conquistas.map(v => v.nome).includes(v));
+            const userServerRoles = member._roles.map(r => member.guild.roles.cache.get(r)).map(r => r.name)
+            const roles = userServerRoles.filter(v => conquistasNames.includes(v));
             const userConquistas = conquistas.filter(conquista => roles.includes(conquista.dataValues.nome));
             const user = users.find(user => user.discordTag === discordTag);
             if(user) {
