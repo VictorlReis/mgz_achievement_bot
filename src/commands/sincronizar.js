@@ -27,7 +27,7 @@ module.exports.run = async (client, msg, _) => {
             const userConquistas = conquistas.filter(conquista => roles.includes(conquista.nome));
             const user = users.find(user => user.discordTag === discordTag);
             if(user) {
-                user.conquistas = userConquistas;
+                user.conquista = userConquistas;
                 user.save()
             }
         }
