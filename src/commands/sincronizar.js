@@ -26,9 +26,10 @@ module.exports.run = async (client, msg, _) => {
                 .filter(v => conquistas.map(v => v.nome).includes(v));
             const userConquistas = conquistas.filter(conquista => roles.includes(conquista.nome));
             const user = users.find(user => user.discordTag === discordTag);
-            user?.addConquistas(userConquistas)
-                .then()
-                .catch(e => msg.channel.send(`ocorreu um erro liga no devops ${e.message}`))
+            if(user) {
+                user.conquistas = userConquistas;
+                user.save()
+            }
         }
         msg.channel.send(`Sincronizado com sucesso ntj! 🤙`)
     } catch (e) {
