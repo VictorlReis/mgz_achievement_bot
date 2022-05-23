@@ -21,5 +21,6 @@ async function updateAchievementByName(name, updatedAchievement) {
 
 module.exports = {
     findAchievementByName,
-    updateAchievementByName
+    updateAchievementByName,
+    getAllAchievements
 }
