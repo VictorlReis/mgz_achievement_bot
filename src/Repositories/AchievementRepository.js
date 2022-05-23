@@ -5,6 +5,10 @@ async function findAchievementByName(name) {
     return conquista.findOne({ where: { nome: name }});
 }
 
+async function getAllAchievements() {
+    return conquista.findAll();
+}
+
 async function updateAchievementByName(name, updatedAchievement) {
     const actualConquista = await findAchievementByName(name);
     if(!actualConquista) {
