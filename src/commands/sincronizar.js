@@ -28,8 +28,7 @@ module.exports.run = async (client, msg, _) => {
             const userConquistas = conquistas.filter(conquista => roles.includes(conquista.dataValues.nome));
             const user = users.find(user => user.discordTag === discordTag);
             if(user) {
-                user.conquista = userConquistas;
-                await user.save()
+                await user.addConquista(userConquistas);
             }
         }
         msg.channel.send(`Sincronizado com sucesso ntj! 🤙`)
