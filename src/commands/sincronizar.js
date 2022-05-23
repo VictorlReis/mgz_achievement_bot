@@ -24,7 +24,7 @@ module.exports.run = async (client, msg, _) => {
             const discordTag = createDiscordTag(member.user);
             const roles = Array.from(member._roles.values())
                 .filter(v => conquistas.map(v => v.nome).includes(v));
-            const userConquistas = conquistas.filter(conquista => roles.includes(conquista.nome));
+            const userConquistas = conquistas.filter(conquista => roles.includes(conquista.dataValues.nome));
             const user = users.find(user => user.discordTag === discordTag);
             if(user) {
                 user.conquista = userConquistas;
