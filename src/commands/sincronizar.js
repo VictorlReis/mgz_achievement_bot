@@ -29,7 +29,7 @@ module.exports.run = async (client, msg, _) => {
             const user = users.find(user => user.discordTag === discordTag);
             if(user) {
                 user.conquista = userConquistas;
-                user.save()
+                await user.save()
             }
         }
         msg.channel.send(`Sincronizado com sucesso ntj! 🤙`)
