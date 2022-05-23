@@ -38,7 +38,7 @@ function tratarMensagem(msg) {
     if (!mensagem) return returnError;
 
     const [a, command, ...params] = mensagem.split(" ");
-    if (!a.includes('.a')) return returnError;
+    if (!a.includes('!c')) return returnError;
 
     const paramsTratados = tratarParams(params);
 
