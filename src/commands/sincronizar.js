@@ -13,9 +13,9 @@ module.exports.run = async (client, msg, _) => {
             const role = guild.roles.cache.get(key);
             const discordTag = createDiscordTag(member.user);
             try {
-                await registrarMeguinha(member.user);
-                const output = await setConquista(msg, [discordTag,role.name ]);
-                msg.channel.send(output);
+                // await registrarMeguinha(member.user);
+                // const output = await setConquista(msg, [discordTag,role.name ]);
+                msg.channel.send(JSON.stringify({user: discordTag, role: role.name}));
             } catch (e) {
                 console.error(e);
                 msg.channel.send(`ocorreu um erro liga no devops ${e.message}`);
