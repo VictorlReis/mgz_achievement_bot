@@ -3,7 +3,7 @@ const {createDiscordTag} = require("../utils");
 const {meguinha, conquista} = models;
 
 async function findUserByDiscordId(discordId) {
-    return meguinha.findOne({where: {discordId}});
+    return meguinha.findOne({where: {discordId}, include: [conquista]});
 }
 
 async function findUserByDiscordTag(discordTag) {

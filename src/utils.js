@@ -1,3 +1,5 @@
+const {MessageEmbed} = require("discord.js");
+
 function validarParametros(params, numeroEsperado) {
     if (!params || params.length !== numeroEsperado) return 'parametros invalidos'
 }
@@ -21,8 +23,24 @@ function chunk(arr, len) {
     return chunks;
 }
 
+function createPages(userView, itemsPerPage, title, mapCallback) {
+    const pages = chunk(userView, itemsPerPage);
+
+    const pageViews = []
+
+    pages.forEach((page, pageNumber) => {
+        const embed = new MessageEmbed();
+        embed.setTitle(title)
+        embed.addFields(page.map((item, index) => mapCallback(item, index, pageNumber)))
+        pageViews.push(embed)
+    })
+
+    return pageViews;
+}
+
 module.exports = {
     validarParametros,
     createDiscordTag,
-    chunk
+    chunk,
+    createPages
 }
