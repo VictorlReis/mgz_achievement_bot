@@ -4,6 +4,8 @@ const {
     bulkUpsertUsers
 } = require("../Repositories/UserRepository");
 const {getAllAchievements} = require("../Repositories/AchievementRepository")
+const {deburr} = require("lodash")
+const unidecode = require('unidecode')
 
 module.exports.run = async (client, msg, _) => {
 
@@ -11,8 +13,8 @@ module.exports.run = async (client, msg, _) => {
     const members = guild.members;
     try {
         const conquistas = await getAllAchievements();
-        const conquistasNames = conquistas.map(c => c.dataValues.nome);
-        const usersFromServer = Array.from(members.cache.values()).filter(user => !user.bot);
+        const conquistasNames = conquistas.map(c => searchString(c.dataValues.nome));
+        const usersFromServer = Array.from(members.cache.values()).filter(user => !user.user.bot);
         const bulkInsertUsersObject = usersFromServer
             .map(member => ({
                 discordTag: createDiscordTag(member.user),
@@ -23,11 +25,23 @@ module.exports.run = async (client, msg, _) => {
 
         for (const member of usersFromServer) {
             const discordTag = createDiscordTag(member.user);
-            const userServerRoles = member._roles.map(r => member.guild.roles.cache.get(r)).map(r => r.name)
-            const roles = userServerRoles.filter(v => conquistasNames.includes(v));
-            const userConquistas = conquistas.filter(conquista => roles.includes(conquista.dataValues.nome));
+
+            const userServerRoles = member._roles
+                .map(r => member.guild.roles.cache.get(r))
+                .map(r => searchString(r.name));
+
+            const roles = userServerRoles
+                .filter(v => {
+                    const ret = conquistasNames.includes(v);
+                    return ret;
+                });
+
+            const userConquistas = conquistas
+                .filter(conquista => roles.includes(searchString(conquista.dataValues.nome)));
+
             const user = users.find(user => user.discordTag === discordTag);
-            if(user) {
+
+            if (user) {
                 await user.addConquista(userConquistas);
             }
         }
@@ -37,3 +51,7 @@ module.exports.run = async (client, msg, _) => {
         msg.channel.send(`ocorreu um erro liga no devops ${e.message}`);
     }
 };
+
+function searchString(str) {
+    return unidecode(deburr(str.replaceAll(" ", "").toLocaleLowerCase()));
+}

@@ -21,10 +21,12 @@
     "discord.js-pagination": "^1.0.3",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "lodash": "^4.17.21",
     "mongodb": "^4.6.0",
     "mongoose": "^6.3.3",
     "pg": "^8.7.3",
-    "sequelize": "^6.19.2"
+    "sequelize": "^6.19.2",
+    "unidecode": "^0.1.8"
   },
   "devDependencies": {
     "sqlite3": "^5.0.8"
