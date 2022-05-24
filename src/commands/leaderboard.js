@@ -22,7 +22,9 @@ module.exports.run = async (client, msg) => {
         .filter(user => user.total !== 0)
 
     userView.sort((a, b) => b.total - a.total)
+
     const usersPerPage = 10;
+
     const mapCallback = (user, userIndex, pageNumber) => {
         const rank = userIndex + (pageNumber * usersPerPage) + 1;
         return {
