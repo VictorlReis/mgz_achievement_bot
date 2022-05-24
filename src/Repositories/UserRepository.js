@@ -3,17 +3,23 @@ const {createDiscordTag} = require("../utils");
 const {meguinha, conquista} = models;
 
 async function findUserByDiscordId(discordId) {
-    return meguinha.findOne({ where: { discordId } });
+    return meguinha.findOne({where: {discordId}});
 }
 
 async function findUserByDiscordTag(discordTag) {
-    return meguinha.findOne({ where: { discordTag } });
+    return meguinha.findOne({where: {discordTag}});
 }
 
 async function getAllUsers() {
     return meguinha.findAll({
-        include : [conquista]
+        include: [conquista]
     });
+}
+
+async function bulkUpsertUsers(users, updateOnDuplicateFields) {
+    await meguinha
+        .bulkCreate(users,
+            {updateOnDuplicate: updateOnDuplicateFields});
 }
 
 async function registrarMeguinha(user) {
@@ -31,5 +37,6 @@ module.exports = {
     findUserByDiscordId,
     findUserByDiscordTag,
     getAllUsers,
-    registrarMeguinha
+    registrarMeguinha,
+    bulkUpsertUsers
 }

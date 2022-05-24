@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const {token, connectionString} = require('../config.json');
+const {token} = require('../config.json');
 const sequelize = require('./Database');
 const client = new Discord.Client({intents: ['DIRECT_MESSAGES', 'GUILD_MESSAGES']});
 const {adminMiddleware} = require('./middleware/admin.middleware');
@@ -38,7 +38,7 @@ function tratarMensagem(msg) {
     if (!mensagem) return returnError;
 
     const [a, command, ...params] = mensagem.split(" ");
-    if (!a.includes('.a')) return returnError;
+    if (!a.includes('!c')) return returnError;
 
     const paramsTratados = tratarParams(params);
 

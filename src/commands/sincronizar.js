@@ -1,20 +1,57 @@
-const {setConquista} = require("./setConquista")
 const {createDiscordTag} = require('../utils')
-const {registrarMeguinha} = require("../Repositories/UserRepository");
+const {
+    getAllUsers,
+    bulkUpsertUsers
+} = require("../Repositories/UserRepository");
+const {getAllAchievements} = require("../Repositories/AchievementRepository")
+const {deburr} = require("lodash")
+const unidecode = require('unidecode')
 
 module.exports.run = async (client, msg, _) => {
 
     const guild = msg.channel.guild;
     const members = guild.members;
+    try {
+        const conquistas = await getAllAchievements();
+        const conquistasNames = conquistas.map(c => searchString(c.dataValues.nome));
+        const usersFromServer = Array.from(members.cache.values()).filter(user => !user.user.bot);
+        const bulkInsertUsersObject = usersFromServer
+            .map(member => ({
+                discordTag: createDiscordTag(member.user),
+                discordId: member.user.id
+            }));
+        await bulkUpsertUsers(bulkInsertUsersObject, ["discordTag"]);
+        const users = await getAllUsers();
 
-    for (const [_, member] of members.cache) {
-        if (member.user.bot) return
-        for (const key of member._roles) {
-            const role = guild.roles.cache.get(key);
+        for (const member of usersFromServer) {
             const discordTag = createDiscordTag(member.user);
-            await registrarMeguinha(member.user);
-            const output = await setConquista(msg, [discordTag,role.name ]);
-            msg.channel.send(output);
+
+            const userServerRoles = member._roles
+                .map(r => member.guild.roles.cache.get(r))
+                .map(r => searchString(r.name));
+
+            const roles = userServerRoles
+                .filter(v => {
+                    const ret = conquistasNames.includes(v);
+                    return ret;
+                });
+
+            const userConquistas = conquistas
+                .filter(conquista => roles.includes(searchString(conquista.dataValues.nome)));
+
+            const user = users.find(user => user.discordTag === discordTag);
+
+            if (user) {
+                await user.addConquista(userConquistas);
+            }
         }
+        msg.channel.send(`Sincronizado com sucesso ntj! 🤙`)
+    } catch (e) {
+        console.error(e);
+        msg.channel.send(`ocorreu um erro liga no devops ${e.message}`);
     }
 };
+
+function searchString(str) {
+    return unidecode(deburr(str.replaceAll(" ", "").toLocaleLowerCase()));
+}

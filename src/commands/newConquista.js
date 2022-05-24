@@ -58,14 +58,14 @@ async function registrarConquistas(file, msg) {
 
     if (typeof conquistas === 'string') return conquistas;
 
-    const bulkInsert = conquistas.map(async conquista => {
+    const bulkInsert = await Promise.all(conquistas.map(async conquista => {
 
         await createRoleIfNeeded(msg, conquista.nome);
         return {
             nome: conquista.nome,
             pontuacao: conquista.pontuacao
         }
-    })
+    }))
 
     try {
         await conquista.bulkCreate(bulkInsert);

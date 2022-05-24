@@ -6,15 +6,22 @@ const paginationEmbed = require('discord.js-pagination');
 module.exports.run = async (client, msg) => {
     const users = await getAllUsers();
 
-    const userView = users.map(user => {
-        const serialUser = user.toJSON()
-        return {
-            name: serialUser.discordId,
-            total: serialUser.conquista
-                .map(x => x.pontuacao)
-                .reduce((prev, cur) => prev + cur, 0)
-        }
-    })
+    if (users.length === 0) {
+        msg.channel.send('Nenhum usuario cadastrado');
+        return;
+    }
+
+    const userView = users
+        .map(user => {
+            const serialUser = user.toJSON()
+            return {
+                name: serialUser.discordId,
+                total: serialUser.conquista
+                    .map(x => x.pontuacao)
+                    .reduce((prev, cur) => prev + cur, 0)
+            }
+        })
+        .filter(user => user.total !== 0)
 
     userView.sort((a, b) => b.total - a.total)
 
@@ -25,16 +32,17 @@ module.exports.run = async (client, msg) => {
 
 
 function createPages(userView) {
-    const pages = chunk(userView, 5);
+    const usersPerPage = 10;
+    const pages = chunk(userView, 10);
 
     const pageViews = []
 
-    pages.forEach((page, index) => {
+    pages.forEach((page, pageNumber) => {
         const embed = new MessageEmbed();
         embed.setTitle(`👑 OS MAIS MAIS 👑`)
         embed.addFields(
             page.map((user, userIndex) => {
-                const rank = userIndex + index + 1;
+                const rank = userIndex + (pageNumber * usersPerPage) + 1;
                 return {
                     name: `${rank === 1 ? `👑 ${rank}` : rank}º`,
                     value: `<@${user.name}> - ${user.total} pontos`
