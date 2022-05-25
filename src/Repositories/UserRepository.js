@@ -17,9 +17,12 @@ async function getAllUsers() {
 }
 
 async function bulkUpsertUsers(users, updateOnDuplicateFields) {
-    await meguinha
-        .bulkCreate(users,
-            {updateOnDuplicate: updateOnDuplicateFields});
+    await meguinha.bulkCreate(
+        users,
+        {
+            fields: Object.getOwnPropertyNames(users[0].keys),
+            updateOnDuplicate: updateOnDuplicateFields
+        });
 }
 
 async function registrarMeguinha(user) {
