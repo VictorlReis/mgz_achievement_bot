@@ -2,8 +2,8 @@ const {createDiscordTag} = require('../utils')
 const {
     getAllUsers,
     bulkUpsertUsers
-} = require("../Repositories/UserRepository");
-const {getAllAchievements} = require("../Repositories/AchievementRepository")
+} = require("../../Repositories/UserRepository");
+const {getAllAchievements} = require("../../Repositories/AchievementRepository")
 const {deburr} = require("lodash")
 const unidecode = require('unidecode')
 
@@ -15,12 +15,16 @@ module.exports.run = async (client, msg, _) => {
         const conquistas = await getAllAchievements();
         const conquistasNames = conquistas.map(c => searchString(c.dataValues.nome));
         const usersFromServer = Array.from(members.cache.values()).filter(user => !user.user.bot);
+        const usersDiscordIds = (await getAllUsers()).map(user => user.discordId);
+
         const bulkInsertUsersObject = usersFromServer
+            .filter(member => !usersDiscordIds.includes(member.user.id))
             .map(member => ({
                 discordTag: createDiscordTag(member.user),
                 discordId: member.user.id
             }));
-        await bulkUpsertUsers(bulkInsertUsersObject, ["discordTag"]);
+        await bulkUpsertUsers(bulkInsertUsersObject);
+
         const users = await getAllUsers();
 
         for (const member of usersFromServer) {
@@ -31,10 +35,7 @@ module.exports.run = async (client, msg, _) => {
                 .map(r => searchString(r.name));
 
             const roles = userServerRoles
-                .filter(v => {
-                    const ret = conquistasNames.includes(v);
-                    return ret;
-                });
+                .filter(v => conquistasNames.includes(v));
 
             const userConquistas = conquistas
                 .filter(conquista => roles.includes(searchString(conquista.dataValues.nome)));

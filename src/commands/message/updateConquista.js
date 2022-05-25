@@ -1,5 +1,5 @@
-const {validarParametros} = require("../utils");
-const {updateAchievementByName} = require("../Repositories/AchievementRepository");
+const {validarParametros} = require("../../utils");
+const {updateAchievementByName} = require("../../Repositories/AchievementRepository");
 
 module.exports.run = async (client, msg, params) => {
     const output = await updateConquista(params);

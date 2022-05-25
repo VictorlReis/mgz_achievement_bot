@@ -16,10 +16,13 @@ async function getAllUsers() {
     });
 }
 
-async function bulkUpsertUsers(users, updateOnDuplicateFields) {
-    await meguinha
-        .bulkCreate(users,
-            {updateOnDuplicate: updateOnDuplicateFields});
+async function bulkUpsertUsers(users) {
+    await meguinha.bulkCreate(
+        users,
+        {
+            fields: ['discordTag', 'discordId'],
+            updateOnDuplicate: ['discordTag', 'discordId']
+        });
 }
 
 async function registrarMeguinha(user) {

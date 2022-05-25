@@ -1,7 +1,7 @@
-const {validarParametros} = require('../utils')
-const {findUserByDiscordTag} = require("../Repositories/UserRepository");
-const {findAchievementByName} = require("../Repositories/AchievementRepository");
-const {models} = require('../Database');
+const {validarParametros} = require('../../utils')
+const {findUserByDiscordTag} = require("../../Repositories/UserRepository");
+const {findAchievementByName} = require("../../Repositories/AchievementRepository");
+const {models} = require('../../Database');
 const {meguinha} = models;
 
 module.exports = {
