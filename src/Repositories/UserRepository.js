@@ -16,12 +16,12 @@ async function getAllUsers() {
     });
 }
 
-async function bulkUpsertUsers(users, updateOnDuplicateFields) {
+async function bulkUpsertUsers(users) {
     await meguinha.bulkCreate(
         users,
         {
-            fields: Object.getOwnPropertyNames(users[0].keys),
-            updateOnDuplicate: updateOnDuplicateFields
+            fields: ['discordTag', 'discordId'],
+            updateOnDuplicate: ['discordTag', 'discordId']
         });
 }
 

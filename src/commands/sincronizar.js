@@ -20,7 +20,7 @@ module.exports.run = async (client, msg, _) => {
                 discordTag: createDiscordTag(member.user),
                 discordId: member.user.id
             }));
-        await bulkUpsertUsers(bulkInsertUsersObject, ["discordTag"]);
+        await bulkUpsertUsers(bulkInsertUsersObject);
         const users = await getAllUsers();
 
         for (const member of usersFromServer) {
