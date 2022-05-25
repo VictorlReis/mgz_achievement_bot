@@ -15,8 +15,7 @@ module.exports.run = async (client, msg, _) => {
         const conquistas = await getAllAchievements();
         const conquistasNames = conquistas.map(c => searchString(c.dataValues.nome));
         const usersFromServer = Array.from(members.cache.values()).filter(user => !user.user.bot);
-        const users = await getAllUsers();
-        const usersDiscordIds = users.map(user => user.discordId);
+        const usersDiscordIds = (await getAllUsers()).map(user => user.discordId);
 
         const bulkInsertUsersObject = usersFromServer
             .filter(member => !usersDiscordIds.includes(member.user.id))
@@ -25,6 +24,8 @@ module.exports.run = async (client, msg, _) => {
                 discordId: member.user.id
             }));
         await bulkUpsertUsers(bulkInsertUsersObject);
+
+        const users = await getAllUsers();
 
         for (const member of usersFromServer) {
             const discordTag = createDiscordTag(member.user);
