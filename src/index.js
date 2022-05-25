@@ -25,28 +25,16 @@ client.on("message", async msg => {
         adminMiddleware(command, msg, runCmd);
     } catch (err) {
         msg.channel.send("Ta tentando falar comigo? Manda um .a help que eu te ajudo");
-        console.log(`(${command}) Error: ${err}`);
-        console.log(err)
+        console.error(`(${command}) Error: ${err}`);
+        console.error(err)
     }
 })
 
 client.on('messageReactionAdd', async (reaction, user) => {
-    // When a reaction is received, check if the structure is partial
-    if (reaction.partial) {
-        // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
-        try {
-            await reaction.fetch();
-        } catch (error) {
-            console.error('Something went wrong when fetching the message:', error);
-            // Return as `reaction.message.author` may be undefined/null
-            return;
-        }
-    }
     const msg = reaction.message;
     const guild = msg.guild;
     const guildMembers = guild.members.cache;
     const guildMember = guildMembers.get(user.id)
-
     // Now the message has been cached and is fully available
     console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction!`);
     // The reaction is now also fully available and the properties will be reflected accurately:
