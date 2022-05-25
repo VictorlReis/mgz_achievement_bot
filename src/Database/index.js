@@ -34,6 +34,7 @@ const sequelize = new Sequelize(connectionString, {
 const modelDefiners = [
     require('../models/conquista'),
     require('../models/meguinha'),
+    require('../models/requisicao'),
 ];
 
 for (const modelDefiner of modelDefiners) {

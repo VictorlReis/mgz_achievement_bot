@@ -1,20 +1,20 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-    sequelize.define('conquista', {
+    sequelize.define('requisicao', {
         id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: DataTypes.INTEGER
         },
-        nome: {
+        idMensagem: {
             allowNull: false,
             type: DataTypes.STRING,
         },
-        pontuacao: {
+        discordId: {
             allowNull: false,
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
         }
     });
 };
