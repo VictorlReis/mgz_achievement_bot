@@ -2,7 +2,11 @@ const {models} = require('../Database');
 const {conquista} = models;
 
 async function findAchievementByName(name) {
-    return conquista.findOne({ where: { nome: name }});
+    return conquista.findOne({where: {nome: name}});
+}
+
+async function findAchievementsByNames(names) {
+    return conquista.findAll({where: {nome: names}});
 }
 
 async function getAllAchievements() {
@@ -11,7 +15,7 @@ async function getAllAchievements() {
 
 async function updateAchievementByName(name, updatedAchievement) {
     const actualConquista = await findAchievementByName(name);
-    if(!actualConquista) {
+    if (!actualConquista) {
         throw new Error("conquista não existe");
     }
     actualConquista.nome = updatedAchievement.nome;
@@ -22,5 +26,6 @@ async function updateAchievementByName(name, updatedAchievement) {
 module.exports = {
     findAchievementByName,
     updateAchievementByName,
-    getAllAchievements
+    getAllAchievements,
+    findAchievementsByNames
 }

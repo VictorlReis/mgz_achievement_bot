@@ -13,14 +13,9 @@ client.once('ready', async () => {
     console.log('Ready!');
 });
 
-client.on("message", async msg => {
-
-    const {command, paramsTratados} = tratarMensagem(msg);
-
-    if (!command) return;
-
+function exec(command, commandType, msg, paramsTratados) {
     try {
-        const commandFile = require(`./commands/message/${command}.js`);
+        const commandFile = require(`./commands/${commandType}/${command}.js`);
         const runCmd = () => commandFile.run(client, msg, paramsTratados);
         adminMiddleware(command, msg, runCmd);
     } catch (err) {
@@ -28,6 +23,14 @@ client.on("message", async msg => {
         console.error(`(${command}) Error: ${err}`);
         console.error(err)
     }
+}
+
+client.on("message", async msg => {
+
+    const {command, paramsTratados} = tratarMensagem(msg);
+
+    if (!command) return;
+    exec(command, "message", msg, paramsTratados);
 })
 
 client.on('messageReactionAdd', async (reaction, user) => {
@@ -35,10 +38,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
     const guild = msg.guild;
     const guildMembers = guild.members.cache;
     const guildMember = guildMembers.get(user.id)
-    // Now the message has been cached and is fully available
-    console.log(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction!`);
-    // The reaction is now also fully available and the properties will be reflected accurately:
-    console.log({user});
+
+    // exec("AuthorizeRequest", "messageReactionAdd", msg);
 });
 
 function tratarMensagem(msg) {
