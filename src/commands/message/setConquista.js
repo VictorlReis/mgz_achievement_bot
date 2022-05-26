@@ -1,8 +1,6 @@
-const {validarParametros} = require('../../utils')
+const {validarParametros, setDiscordRole} = require('../../utils')
 const {findUserByDiscordTag} = require("../../Repositories/UserRepository");
 const {findAchievementByName} = require("../../Repositories/AchievementRepository");
-const {models} = require('../../Database');
-const {meguinha} = models;
 
 module.exports = {
     run,
@@ -16,7 +14,7 @@ async function run(client, msg, params) {
     } catch (err) {
         msg.channel.send(`ocorreu um erro liga no devops ${err.message}`);
     }
-};
+}
 
 async function setConquista(msg, params) {
     const paramValido = validarParametros(params, 2);
@@ -47,10 +45,3 @@ async function getAchievement(achievementName) {
     return await findAchievementByName(achievementName);
 }
 
-function setDiscordRole(msg, achievementName, discordId) {
-    const guild = msg.channel.guild;
-    const role = guild.roles.cache.find(r => r.name === achievementName);
-    const member = guild.members.cache.get(discordId);
-
-    member.roles.add(role);
-}
