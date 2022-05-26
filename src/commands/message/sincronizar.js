@@ -1,9 +1,9 @@
-const {createDiscordTag} = require('../utils')
+const {createDiscordTag} = require('../../utils')
 const {
     getAllUsers,
     bulkUpsertUsers
-} = require("../Repositories/UserRepository");
-const {getAllAchievements} = require("../Repositories/AchievementRepository")
+} = require("../../Repositories/UserRepository");
+const {getAllAchievements} = require("../../Repositories/AchievementRepository")
 const {deburr} = require("lodash")
 const unidecode = require('unidecode')
 

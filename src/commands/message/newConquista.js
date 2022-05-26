@@ -1,7 +1,7 @@
-const {validarParametros} = require('../utils')
-const {baixarArquivoCSV, getJsonFromCSVFile} = require("../Repositories/FileRepository");
-const {models} = require('../Database');
-const {findAchievementByName} = require("../Repositories/AchievementRepository");
+const {validarParametros} = require('../../utils')
+const {baixarArquivoCSV, getJsonFromCSVFile} = require("../../Repositories/FileRepository");
+const {models} = require('../../Database');
+const {findAchievementByName} = require("../../Repositories/AchievementRepository");
 const {conquista} = models;
 
 module.exports.run = async (client, msg, params) => {

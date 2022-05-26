@@ -8,8 +8,8 @@ const cors = require("cors");
 
 
 const app = express();
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.json({limit: "50mb"}));
+app.use(express.urlencoded({limit: "50mb", extended: true}));
 
 app.use(cors());
 
@@ -34,6 +34,7 @@ const sequelize = new Sequelize(connectionString, {
 const modelDefiners = [
     require('../models/conquista'),
     require('../models/meguinha'),
+    require('../models/requisicao'),
 ];
 
 for (const modelDefiner of modelDefiners) {

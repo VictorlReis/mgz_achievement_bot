@@ -1,5 +1,5 @@
-const {getAllUsers} = require("../Repositories/UserRepository");
-const {createPages} = require("../utils")
+const {getAllUsers} = require("../../Repositories/UserRepository");
+const {createPages} = require("../../utils")
 const paginationEmbed = require('discord.js-pagination');
 
 module.exports.run = async (client, msg) => {
@@ -22,9 +22,7 @@ module.exports.run = async (client, msg) => {
         .filter(user => user.total !== 0)
 
     userView.sort((a, b) => b.total - a.total)
-
     const usersPerPage = 10;
-
     const mapCallback = (user, userIndex, pageNumber) => {
         const rank = userIndex + (pageNumber * usersPerPage) + 1;
         return {

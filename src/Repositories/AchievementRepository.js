@@ -5,6 +5,10 @@ async function findAchievementByName(name) {
     return conquista.findOne({ where: { nome: name }});
 }
 
+async function findAchievementsByNames(names) {
+    return conquista.findAll({where: {nome: names}});
+}
+
 async function getAllAchievements() {
     return conquista.findAll();
 }
@@ -22,5 +26,6 @@ async function updateAchievementByName(name, updatedAchievement) {
 module.exports = {
     findAchievementByName,
     updateAchievementByName,
-    getAllAchievements
+    getAllAchievements,
+    findAchievementsByNames
 }

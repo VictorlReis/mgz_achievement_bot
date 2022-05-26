@@ -1,5 +1,5 @@
-const {findUserByDiscordId} = require("../Repositories/UserRepository");
-const {createPages} = require("../utils");
+const {findUserByDiscordId} = require("../../Repositories/UserRepository");
+const {createPages} = require("../../utils");
 const paginationEmbed = require('discord.js-pagination');
 
 module.exports.run = async (client, msg) => {
