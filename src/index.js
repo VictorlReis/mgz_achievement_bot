@@ -4,10 +4,13 @@ const {Client, Intents} = require('discord.js');
 const {adminMiddleware} = require('./middleware/admin.middleware');
 const {REACTIONS} = require("./constants");
 const {getAllRequests} = require('./Repositories/RequestRepository')
+const {log} = require('./logger/telegram.logger')
 const client = new Client({
     intents: [Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS],
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
+
+global.telegramLogger = (msg) => log(msg)
 
 client.once('ready', async () => {
     await assertDatabaseConnectionOk();
@@ -21,8 +24,8 @@ async function exec(command, commandType, msg, paramsTratados) {
         await adminMiddleware(command, msg, runCmd, paramsTratados.discordId)();
     } catch (err) {
         msg.channel.send("Ta tentando falar comigo? Manda um !c help que eu te ajudo");
-        console.error(`(${command}) Error: ${err}`);
-        console.error(err)
+        telegramLogger(`(${command}) Error: ${err.message}`);
+        telegramLogger(JSON.stringify(err));
     }
 }
 
@@ -90,15 +93,16 @@ function notValidReaction(reaction) {
 }
 
 async function assertDatabaseConnectionOk() {
-    console.log(`Checking database connection...`);
+    telegramLogger(`Checking database connection...`);
     try {
         await sequelize.authenticate();
         await sequelize.sync();
-        console.log('Database connection OK!');
+        telegramLogger('Database connection OK!');
+        telegramLogger('Deployed successfully!');
+
     } catch (error) {
-        console.log('Unable to connect to the database:');
-        console.log(error.message);
+        telegramLogger('Unable to connect to the database:');
+        telegramLogger(error.message);
         process.exit(1);
     }
 }
-
