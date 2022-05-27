@@ -34,16 +34,16 @@ client.on("message", async msg => {
     await exec(command, "message", msg, paramsTratados);
 })
 
-client.on('messageReactionAdd', async (reaction, user) => {
-    if (user.bot) return;
-    if(notValidReaction(reaction._emoji.name)) return;
-    const msg = reaction.message;
-    const params = {
-        discordId: user.id,
-        reaction: reaction._emoji.name
-    }
-    await exec("AuthorizeRequest", "messageReactionAdd", msg, params);
-});
+// client.on('messageReactionAdd', async (reaction, user) => {
+//     if (user.bot) return;
+//     if(notValidReaction(reaction._emoji.name)) return;
+//     const msg = reaction.message;
+//     const params = {
+//         discordId: user.id,
+//         reaction: reaction._emoji.name
+//     }
+//     await exec("AuthorizeRequest", "messageReactionAdd", msg, params);
+// });
 
 function tratarMensagem(msg) {
 
