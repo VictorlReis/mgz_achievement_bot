@@ -24,8 +24,7 @@ async function exec(command, commandType, msg, paramsTratados) {
         await adminMiddleware(command, msg, runCmd, paramsTratados.discordId)();
     } catch (err) {
         msg.channel.send("Ta tentando falar comigo? Manda um !c help que eu te ajudo");
-        telegramLogger(`(${command}) Error: ${err.message}`);
-        telegramLogger(JSON.stringify(err));
+        await telegramLogger(`(${command}) Error: ${err.message}`);
     }
 }
 
@@ -93,16 +92,16 @@ function notValidReaction(reaction) {
 }
 
 async function assertDatabaseConnectionOk() {
-    telegramLogger(`Checking database connection...`);
+    await telegramLogger(`Checking database connection...`);
     try {
         await sequelize.authenticate();
         await sequelize.sync();
-        telegramLogger('Database connection OK!');
-        telegramLogger('Deployed successfully!');
+        await telegramLogger('Database connection OK!');
+        await telegramLogger('Deployed successfully!');
 
     } catch (error) {
-        telegramLogger('Unable to connect to the database:');
-        telegramLogger(error.message);
+        await telegramLogger('Unable to connect to the database:');
+        await telegramLogger(error.message);
         process.exit(1);
     }
 }

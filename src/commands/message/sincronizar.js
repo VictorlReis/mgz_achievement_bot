@@ -48,8 +48,7 @@ module.exports.run = async (client, msg, _) => {
         }
         msg.channel.send(`Sincronizado com sucesso ntj! 🤙`)
     } catch (e) {
-        telegramLogger(`Erro no sincronizar message: ${e.message}`)
-        telegramLogger(JSON.stringify(e))
+        await telegramLogger(`Erro no sincronizar message: ${e.message}`)
         msg.channel.send(`ocorreu um erro liga no devops ${e.message}`);
     }
 };

@@ -47,8 +47,7 @@ async function createRoleIfNeeded(msg, achievementName) {
         })
     } catch (error) {
         msg.channel.send(`erro ao criar cargo ${achievementName} crie manualmente`);
-        telegramLogger(`createRoleIfNeeded(${JSON.stringify(msg)}, ${achievementName}) - error message: ${error.message}`);
-        telegramLogger(JSON.stringify(error))
+        await telegramLogger(`createRoleIfNeeded(${JSON.stringify(msg)}, ${achievementName}) - error message: ${error.message}`);
     }
 }
 
