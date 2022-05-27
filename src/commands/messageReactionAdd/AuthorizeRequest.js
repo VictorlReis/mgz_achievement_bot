@@ -3,21 +3,10 @@ const {deleteRequestByMsgId, findRequestByMsgId} = require("../../Repositories/R
 const {findUserByDiscordId} = require("../../Repositories/UserRepository");
 const {setDiscordRole} = require("../../utils");
 
-function notValidReaction(reaction) {
-    for (const reactionKey in REACTIONS) {
-        if (reactionKey === reaction) {
-            return true;
-        }
-    }
-    return false;
-}
+
 
 module.exports.run = async (client, msg, params) => {
     const {discordId, reaction} = params;
-
-    if (notValidReaction(reaction)) {
-        return;
-    }
 
     if (reaction === REACTIONS.REJECT) {
         await deleteRequestByMsgId(msg.id);
@@ -28,7 +17,9 @@ module.exports.run = async (client, msg, params) => {
         const user = await findUserByDiscordId(request.discordId);
         await user.addConquista(request.conquista);
         const nomesConquistas = request.conquista.map(a => a.toJSON().nome)
-        nomesConquistas.forEach(conquista => setDiscordRole(msg, conquista, discordId))
+        for (const conquista of nomesConquistas) {
+            await setDiscordRole(msg, conquista, discordId);
+        }
         await deleteRequestByMsgId(msg.id);
     }
     msg.delete()

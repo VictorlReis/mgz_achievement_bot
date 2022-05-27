@@ -38,12 +38,12 @@ function createPages(userView, itemsPerPage, title, mapCallback) {
     return pageViews;
 }
 
-function setDiscordRole(msg, achievementName, discordId) {
+async function setDiscordRole(msg, achievementName, discordId) {
     const guild = msg.channel.guild;
     const role = guild.roles.cache.find(r => r.name === achievementName);
     const member = guild.members.cache.get(discordId);
 
-    member.roles.add(role);
+    await member.roles.add(role);
 }
 
 module.exports = {
