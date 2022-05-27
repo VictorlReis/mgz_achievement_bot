@@ -13,11 +13,11 @@ function isAdmin(msg, userId) {
 }
 
 function adminMiddleware(cmd, msg, runCmd, reactionUserId) {
-    if(!adminCommands.has(cmd)) return runCmd();
+    if(!adminCommands.has(cmd)) return runCmd;
 
-    if(isAdmin(msg, reactionUserId)) return runCmd();
+    if(isAdmin(msg, reactionUserId)) return runCmd;
 
-    msg.channel.send("Você precisa ser da DIRETORIA pra usar isso ai mané");
+    return () => msg.channel.send("Você precisa ser da DIRETORIA pra usar isso ai mané");
 }
 
 module.exports = {
