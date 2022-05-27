@@ -14,11 +14,11 @@ client.once('ready', async () => {
     console.log('Ready!');
 });
 
-function exec(command, commandType, msg, paramsTratados) {
+async function exec(command, commandType, msg, paramsTratados) {
     try {
         const commandFile = require(`./commands/${commandType}/${command}.js`);
         const runCmd = () => commandFile.run(client, msg, paramsTratados);
-        adminMiddleware(command, msg, runCmd, paramsTratados.discordId);
+        await adminMiddleware(command, msg, runCmd, paramsTratados.discordId)();
     } catch (err) {
         msg.channel.send("Ta tentando falar comigo? Manda um !c help que eu te ajudo");
         console.error(`(${command}) Error: ${err}`);
@@ -31,7 +31,7 @@ client.on("message", async msg => {
     const {command, paramsTratados} = tratarMensagem(msg);
 
     if (!command) return;
-    exec(command, "message", msg, paramsTratados);
+    await exec(command, "message", msg, paramsTratados);
 })
 
 client.on('messageReactionAdd', async (reaction, user) => {
@@ -42,7 +42,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
         discordId: user.id,
         reaction: reaction._emoji.name
     }
-    exec("AuthorizeRequest", "messageReactionAdd", msg, params);
+    await exec("AuthorizeRequest", "messageReactionAdd", msg, params);
 });
 
 function tratarMensagem(msg) {
