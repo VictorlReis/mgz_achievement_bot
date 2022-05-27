@@ -22,8 +22,13 @@ async function findRequestByMsgId(msgId) {
     })
 }
 
+async function getAllRequests() {
+    return requisicao.findAll();
+}
+
 module.exports = {
     createRequest,
     deleteRequestByMsgId,
-    findRequestByMsgId
+    findRequestByMsgId,
+    getAllRequests
 }
