@@ -2,6 +2,7 @@ const {token} = require('../config.json');
 const sequelize = require('./Database');
 const {Client, Intents} = require('discord.js');
 const {adminMiddleware} = require('./middleware/admin.middleware');
+const {REACTIONS} = require("./constants");
 
 const client = new Client({
     intents: [Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS],
@@ -35,6 +36,7 @@ client.on("message", async msg => {
 
 client.on('messageReactionAdd', async (reaction, user) => {
     if (user.bot) return;
+    if(notValidReaction(reaction._emoji.name)) return;
     const msg = reaction.message;
     const params = {
         discordId: user.id,
@@ -71,6 +73,15 @@ function tratarParams(params) {
         .join(" ")
         .split("/")
         .map(param => param.trim());
+}
+
+function notValidReaction(reaction) {
+    for (const reactionKey in REACTIONS) {
+        if (reactionKey === reaction) {
+            return true;
+        }
+    }
+    return false;
 }
 
 async function assertDatabaseConnectionOk() {
