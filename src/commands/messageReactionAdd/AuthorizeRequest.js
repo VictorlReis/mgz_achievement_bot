@@ -4,9 +4,8 @@ const {findUserByDiscordId} = require("../../Repositories/UserRepository");
 const {setDiscordRole} = require("../../utils");
 
 
-
 module.exports.run = async (client, msg, params) => {
-    const {discordId, reaction} = params;
+    const {reaction} = params;
 
     if (reaction === REACTIONS.REJECT) {
         await deleteRequestByMsgId(msg.id);
@@ -18,7 +17,7 @@ module.exports.run = async (client, msg, params) => {
         await user.addConquista(request.conquista);
         const nomesConquistas = request.conquista.map(a => a.toJSON().nome)
         for (const conquista of nomesConquistas) {
-            await setDiscordRole(msg, conquista, discordId);
+            await setDiscordRole(msg, conquista, request.discordId);
         }
         await deleteRequestByMsgId(msg.id);
     }
