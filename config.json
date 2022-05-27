@@ -2,5 +2,7 @@
     "token": "OTc0NjM5NjQ0MzA0MTAxMzc2.GUPh9s.hSisQvxyWeAG55R-xc89XNF-0zknEcFNVwa4yI",
     "clientId": "974639644304101376",
     "guildId": "974646748435853402",
-    "connectionString": "postgres://scmcybmjkxjlut:282b45238e6a3aba98c7158ccf54242d66fc85ecf378da3feb9136a09b8e3b49@ec2-44-196-174-238.compute-1.amazonaws.com:5432/df05kl398pnlvm"
+    "connectionString": "postgres://scmcybmjkxjlut:282b45238e6a3aba98c7158ccf54242d66fc85ecf378da3feb9136a09b8e3b49@ec2-44-196-174-238.compute-1.amazonaws.com:5432/df05kl398pnlvm",
+    "telegramToken": "5541679004:AAEOME3U9DLXzOCG0dQ7rKRz57gdG29U9vQ",
+    "chatId": -695942553
 }
