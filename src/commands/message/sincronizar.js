@@ -1,4 +1,4 @@
-const {createDiscordTag} = require('../utils')
+const {createDiscordTag} = require('../../utils')
 const {
     getAllUsers,
     bulkUpsertUsers
@@ -48,7 +48,8 @@ module.exports.run = async (client, msg, _) => {
         }
         msg.channel.send(`Sincronizado com sucesso ntj! 🤙`)
     } catch (e) {
-        console.error(e);
+        telegramLogger(`Erro no sincronizar message: ${e.message}`)
+        telegramLogger(JSON.stringify(e))
         msg.channel.send(`ocorreu um erro liga no devops ${e.message}`);
     }
 };
