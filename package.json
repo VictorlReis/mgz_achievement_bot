@@ -21,6 +21,7 @@
     "discord.js-pagination": "^1.0.3",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "json-stable-stringify": "^1.0.1",
     "lodash": "^4.17.21",
     "mongodb": "^4.6.0",
     "mongoose": "^6.3.3",
