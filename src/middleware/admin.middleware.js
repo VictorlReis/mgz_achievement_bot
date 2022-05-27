@@ -7,7 +7,7 @@ const adminCommands = new Set([
 ]);
 
 function isAdmin(msg, userId) {
-    if (!userId) {
+    if (userId) {
         return msg.channel.guild.members.cache.get(userId).permissionsIn(msg.channel).has("ADMINISTRATOR");
     }
     return msg.member.permissionsIn(msg.channel).has("ADMINISTRATOR");
