@@ -1,20 +1,17 @@
 const TelegramBot = require('node-telegram-bot-api');
 const {telegramToken, chatId} = require('../../config.json');
 const bot = new TelegramBot(telegramToken, {polling: true});
+const stringify = require('json-stable-stringify');
 
 async function log(message) {
-    if (!Array.isArray(message)) {
-        message = [message]
+    if (typeof message === 'object') {
+        message = stringify(message);
     }
 
-    for (const msg of message) {
-        if (!msg) return;
-        try {
-            await bot.sendMessage(chatId, msg)
-
-        } catch (err) {
-            console.error(err)
-        }
+    try {
+        await bot.sendMessage(chatId, message);
+    } catch (err) {
+        console.error(err)
     }
 }
 

@@ -27,8 +27,7 @@ const sequelize = new Sequelize(connectionString, {
             require: true,
             rejectUnauthorized: false
         }
-    },
-    logging: (...msg) => telegramLogger(msg)
+    }
 });
 
 const modelDefiners = [
