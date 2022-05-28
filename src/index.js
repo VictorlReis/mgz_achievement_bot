@@ -85,7 +85,7 @@ function tratarParams(params) {
 
 function notValidReaction(reaction) {
     for (const reactionKey in REACTIONS) {
-        if (reactionKey === reaction) {
+        if (REACTIONS[reactionKey] === reaction) {
             return false;
         }
     }
