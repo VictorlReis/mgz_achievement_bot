@@ -1,4 +1,4 @@
-const {validarParametros, setDiscordRole} = require('../../utils')
+const {validarParametros, setDiscordRole} = require('../../functions/utils')
 const {findUserByDiscordTag} = require("../../Repositories/UserRepository");
 const {findAchievementByName} = require("../../Repositories/AchievementRepository");
 

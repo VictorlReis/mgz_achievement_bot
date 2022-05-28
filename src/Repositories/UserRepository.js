@@ -1,5 +1,5 @@
 const {models} = require('../Database');
-const {createDiscordTag} = require("../utils");
+const {createDiscordTag} = require("../functions/utils");
 const {meguinha, conquista} = models;
 
 async function findUserByDiscordId(discordId) {
