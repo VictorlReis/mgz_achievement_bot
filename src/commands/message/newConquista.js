@@ -1,4 +1,4 @@
-const {validarParametros} = require('../../utils')
+const {validarParametros} = require('../../functions/utils')
 const {baixarArquivoCSV, getJsonFromCSVFile} = require("../../Repositories/FileRepository");
 const {models} = require('../../Database');
 const {findAchievementByName} = require("../../Repositories/AchievementRepository");

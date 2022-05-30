@@ -1,4 +1,4 @@
-const {validarParametros} = require("../../utils");
+const {validarParametros} = require("../../functions/utils");
 const {updateAchievementByName} = require("../../Repositories/AchievementRepository");
 
 module.exports.run = async (client, msg, params) => {

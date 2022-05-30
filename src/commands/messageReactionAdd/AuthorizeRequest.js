@@ -1,7 +1,7 @@
 const {REACTIONS} = require("../../constants");
 const {deleteRequestByMsgId, findRequestByMsgId} = require("../../Repositories/RequestRepository")
 const {findUserByDiscordId} = require("../../Repositories/UserRepository");
-const {setDiscordRole} = require("../../utils");
+const {setDiscordRole} = require("../../functions/utils");
 
 
 module.exports.run = async (client, msg, params) => {

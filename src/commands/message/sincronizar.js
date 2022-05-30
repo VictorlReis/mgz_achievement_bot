@@ -1,4 +1,4 @@
-const {createDiscordTag} = require('../../utils')
+const {createDiscordTag} = require('../../functions/utils')
 const {
     getAllUsers,
     bulkUpsertUsers

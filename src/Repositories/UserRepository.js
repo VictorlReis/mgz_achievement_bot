@@ -1,6 +1,6 @@
 const {models} = require('../Database');
-const {createDiscordTag} = require("../utils");
-const {meguinha, conquista} = models;
+const {createDiscordTag} = require("../functions/utils");
+const {meguinha, conquista, conquistasMeguinha} = models;
 
 async function findUserByDiscordId(discordId) {
     return meguinha.findOne({where: {discordId}, include: [conquista]});
@@ -14,6 +14,16 @@ async function getAllUsers() {
     return meguinha.findAll({
         include: [conquista]
     });
+}
+
+async function getUserAchievements(userId) {
+    const user = await findUserByDiscordId(userId);
+    const userAchievements = await conquistasMeguinha.findAll({where: {meguinhaId: user.id}});
+    let arrayAchievementsId = [];
+    await userAchievements.forEach(element => {
+        arrayAchievementsId.push(element.conquistumId);
+    });
+    return conquista.findAll({where: {id: arrayAchievementsId}});
 }
 
 async function bulkUpsertUsers(users) {
@@ -41,5 +51,6 @@ module.exports = {
     findUserByDiscordTag,
     getAllUsers,
     registrarMeguinha,
-    bulkUpsertUsers
+    bulkUpsertUsers,
+    getUserAchievements
 }
