@@ -19,7 +19,7 @@ async function getAllUsers() {
 async function getUserAchievements(userId) {
     const user = await findUserByDiscordId(userId);
     const userAchievements = await conquistasMeguinha.findAll({where: {meguinhaId: user.id}});
-    let arrayAchievementsId = [];
+    const arrayAchievementsId = [];
     await userAchievements.forEach(element => {
         arrayAchievementsId.push(element.conquistumId);
     });

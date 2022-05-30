@@ -7,6 +7,11 @@ module.exports.run = async (client, msg, params) => {
 
     const achievements = await findAchievementsByNames(params)
 
+    if (achievements.length == 0) {
+        msg.channel.send(`Eita, acho que você errou alguma coisa aí. Essa conquista não existe. :face_with_raised_eyebrow:`);
+        return
+    }
+
     const achievementsPrintable = achievements
         .map(a => a.toJSON().nome)
         .reduce((prev, cur) => {
@@ -19,17 +24,18 @@ module.exports.run = async (client, msg, params) => {
         .filter(userAchievements => achievements.map(achiev => achiev.toJSON().nome).includes(userAchievements));
 
     if (alreadyHasAchievement.length > 0) {
-        msg.channel.send(`Porra irmão, me ajuda a te ajudar, você já tem a(s) conquista(s): ${alreadyHasAchievement}`);
-    } else {
-        const sentMsg = await msg.channel.send(`<@${userId}> requisitou: ${achievementsPrintable}`)
-        await sentMsg.react(REACTIONS.CONFIRM)
-        await sentMsg.react(REACTIONS.REJECT)
-
-        const request = await createRequest({
-            idMensagem: sentMsg.id,
-            discordId: userId
-        })
-
-        await request.addConquista(achievements)
+        msg.channel.send(`Aí não, né? Olha a safadeza. Você já tem a(s) conquista(s): ${alreadyHasAchievement}`);
+        return
     }
+
+    const sentMsg = await msg.channel.send(`<@${userId}> requisitou: ${achievementsPrintable}`)
+    await sentMsg.react(REACTIONS.CONFIRM)
+    await sentMsg.react(REACTIONS.REJECT)
+
+    const request = await createRequest({
+        idMensagem: sentMsg.id,
+        discordId: userId
+    })
+
+    await request.addConquista(achievements)
 }
