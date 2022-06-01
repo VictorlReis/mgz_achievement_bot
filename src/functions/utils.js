@@ -5,6 +5,7 @@ function validarParametros(params, numeroEsperado) {
 }
 
 function createDiscordTag(author) {
+    if (!author || !author.discriminator || !author.username) throw new Error('author not defined');
     return author.username + "#" + author.discriminator;
 }
 

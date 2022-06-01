@@ -34,7 +34,7 @@ describe("utils test", () => {
     })
 
     describe("createDiscordTag test", () => {
-        it('should return author username and author discriminator with a # between', function () {
+        it('should return author username and author discriminator with a # between', () => {
             const author = {
                 username: 'user',
                 discriminator: '2193'
@@ -42,6 +42,50 @@ describe("utils test", () => {
 
             expect(utils.createDiscordTag(author)).toBe(`${author.username}#${author.discriminator}`)
         });
+
+        it('should throw an error if author is not defined', () => {
+            try {
+                utils.createDiscordTag()
+            } catch (err) {
+                expect(err.message).toBe('author not defined')
+            }
+        })
+
+        it('should throw an error if author discriminator is not defined', () => {
+            try {
+                utils.createDiscordTag({username: 'a'})
+            } catch (err) {
+                expect(err.message).toBe('author not defined')
+            }
+        })
+
+        it('should throw an error if author username is not defined', () => {
+            try {
+                utils.createDiscordTag({discriminator: 'a'})
+            } catch (err) {
+                expect(err.message).toBe('author not defined')
+            }
+        })
+    })
+
+    describe("setDiscordRole test", () => {
+        const msgMock = {
+            channel: {
+                guild: {
+                    roles: {
+                        cache: [
+                            {
+                                name: 'MockRole'
+                            }
+                        ]
+                    },
+                    member: {
+                        cache : new Map()
+                    }
+                }
+            }
+        }
+
     })
 
 
