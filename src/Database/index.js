@@ -1,7 +1,7 @@
 const {Sequelize} = require('sequelize');
 const {applyExtraSetup} = require('./ExtraSetup');
 require('dotenv').config()
-const connectionString = process.env.connectionString
+const connectionString = process.env.DATABASE_URL
 
 const express = require("express");
 
