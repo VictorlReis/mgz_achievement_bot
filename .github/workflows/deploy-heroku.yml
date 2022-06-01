@@ -1,0 +1,31 @@
+name: deployment heroku
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+        mongodb-version: [4.2]
+
+    steps:
+      - name: Deploy application
+        if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "bot-achivement"
+          heroku_email: "nickmaglowsch3@gmail.com"
+          buildpack: "https://github.com/zidizei/heroku-buildpack-tsc#v2.0"
