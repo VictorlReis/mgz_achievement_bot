@@ -1,5 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
-const {telegramToken, chatId} = require('../../config.json');
+require('dotenv').config()
+const telegramToken = process.env.telegramToken
+const chatId = process.env.chatId
 const bot = new TelegramBot(telegramToken, {polling: true});
 const stringify = require('json-stable-stringify');
 

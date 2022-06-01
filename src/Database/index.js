@@ -1,6 +1,7 @@
 const {Sequelize} = require('sequelize');
 const {applyExtraSetup} = require('./ExtraSetup');
-const {connectionString} = require('../../config.json');
+require('dotenv').config()
+const connectionString = process.env.connectionString
 
 const express = require("express");
 

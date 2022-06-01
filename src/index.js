@@ -1,4 +1,3 @@
-const {token} = require('../config.json');
 const sequelize = require('./Database');
 const {Client, Intents} = require('discord.js');
 const {adminMiddleware} = require('./middleware/admin.middleware');
@@ -9,6 +8,10 @@ const client = new Client({
     intents: [Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS],
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
+require('dotenv').config()
+
+const token = process.env.token
+
 
 global.telegramLogger = (msg) => process.env.PORT ? log(msg): console.log(msg)
 
