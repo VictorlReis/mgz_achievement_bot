@@ -10,18 +10,11 @@ on:
       - main
       - master
 jobs:
-
-  build:
-
+  deploy-prd:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-        mongodb-version: [4.2]
-
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
       - name: Staging deploy
-      run: |
-        git push -f https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/bot-achivement.git master
+        run: |
+          git push -f https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/bot-achivement.git master
