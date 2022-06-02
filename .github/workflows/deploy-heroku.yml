@@ -10,11 +10,12 @@ on:
       - main
       - master
 jobs:
-  deploy-prd:
+  build:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
-      - name: Staging deploy
-        run: |
-          git push -f https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/bot-achivement.git master
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "bot-achivement"
+          heroku_email: "nickmaglowsch3@gmail.com"
