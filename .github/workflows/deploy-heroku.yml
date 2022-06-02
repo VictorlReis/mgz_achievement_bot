@@ -21,11 +21,7 @@ jobs:
         mongodb-version: [4.2]
 
     steps:
-      - name: Deploy application
-        if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
-        uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "bot-achivement"
-          heroku_email: "nickmaglowsch3@gmail.com"
-          buildpack: "https://github.com/zidizei/heroku-buildpack-tsc#v2.0"
+      - uses: actions/checkout@v2
+      - name: Staging deploy
+      run: |
+        git push -f https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/bot-achivement.git master
